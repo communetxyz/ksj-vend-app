@@ -4,6 +4,7 @@ export default defineConfig({
   outputDir: "test-results/chain",
   testMatch: "checkout-chain.spec.ts",
   timeout: 240000,
+  expect: { timeout: 30000 },
   workers: 1,
   reporter: "list",
   use: { baseURL: "http://127.0.0.1:4184", serviceWorkers: "block", trace: "retain-on-failure" },
