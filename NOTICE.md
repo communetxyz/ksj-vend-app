@@ -1,0 +1,2 @@
+The UI uses the actual decentralparknyc/decentralpark-ui-kit package built from commit 7696b1b, retained in vendor/. The BLE transport/controller were carried forward from the field prototype written for this task. The customer application and four-compartment model are maintained in this fresh repository.
+The setup slideshow includes a screenshot crop of the user-supplied Alibaba listing for identifying the purchased machine; the slide links to that source. It is not a generated image or a photo of a tested local unit.
