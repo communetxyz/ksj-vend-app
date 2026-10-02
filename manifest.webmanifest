@@ -1,0 +1,1 @@
+{"name":"KSJ Mutual Vend","short_name":"Mutual Vend","description":"Four-compartment customer checkout and KSJ setup","start_url":"./","display":"standalone","background_color":"#f0fdf4","theme_color":"#14211a","lang":"en","scope":"./","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}

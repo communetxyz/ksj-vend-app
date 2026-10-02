@@ -1,0 +1,1201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#183b2b" />
+    <title>KSJ four-compartment setup — step by step</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #f4f7ed;
+        color: #183b2b;
+        font-family: Arial, sans-serif;
+      }
+      a {
+        color: inherit;
+      }
+      header {
+        height: 76px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 5vw;
+        border-bottom: 1px solid #cbd9c4;
+        gap: 20px;
+      }
+      header strong {
+        font-size: 24px;
+        letter-spacing: -1px;
+      }
+      header span {
+        font-size: 12px;
+      }
+      header a {
+        font-size: 13px;
+      }
+      main {
+        min-height: calc(100dvh - 154px);
+      }
+      .slide {
+        max-width: 1440px;
+        margin: auto;
+        min-height: calc(100dvh - 154px);
+        padding: 5vh 7vw;
+        display: flex;
+        align-items: center;
+        gap: 5vw;
+      }
+      .slide[hidden] {
+        display: none;
+      }
+      .slide-copy {
+        flex: 1;
+        min-width: 0;
+      }
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 3px;
+        font-weight: bold;
+        margin: 0 0 23px;
+      }
+      h1 {
+        font-size: clamp(30px, 3.7vw, 54px);
+        line-height: 1.07;
+        letter-spacing: -1.6px;
+        margin: 0 0 28px;
+        max-width: 860px;
+      }
+      ol {
+        padding-left: 27px;
+        margin: 0;
+        font-size: clamp(17px, 1.55vw, 23px);
+        line-height: 1.55;
+        max-width: 920px;
+      }
+      li {
+        padding-left: 8px;
+        margin-bottom: 14px;
+      }
+      .done {
+        margin: 27px 0 18px;
+        padding: 18px 0 0;
+        border-top: 2px solid #7f9b6d;
+        max-width: 840px;
+      }
+      .done strong {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+      }
+      .done p {
+        margin: 8px 0 0;
+        font-size: 18px;
+        line-height: 1.5;
+      }
+      .note {
+        font-size: 13px;
+        line-height: 1.6;
+        color: #4c6247;
+        max-width: 820px;
+        margin: 0;
+      }
+      .slide-extra {
+        flex: 0 0 34%;
+        min-width: 240px;
+        max-width: 440px;
+      }
+      figure {
+        margin: 0;
+      }
+      figure img {
+        width: 100%;
+        border-radius: 8px;
+      }
+      figcaption {
+        font-size: 10px;
+        margin-top: 12px;
+        color: #4c6247;
+        line-height: 1.5;
+      }
+      footer {
+        min-height: 78px;
+        padding: 15px 5vw;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        border-top: 1px solid #cbd9c4;
+        background: #f4f7ed;
+        position: sticky;
+        bottom: 0;
+      }
+      button,
+      .action {
+        font: inherit;
+        background: #1d5037;
+        color: white;
+        border: 1px solid #1d5037;
+        padding: 12px 22px;
+        border-radius: 5px;
+        text-decoration: none;
+        cursor: pointer;
+        display: inline-block;
+      }
+      button:disabled {
+        opacity: 0.45;
+        cursor: default;
+      }
+      #prev {
+        background: transparent;
+        color: #183b2b;
+      }
+      #counter {
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      .progress {
+        height: 3px;
+        background: #d6e0cf;
+        flex: 1;
+      }
+      .progress > div {
+        height: 100%;
+        background: #1d5037;
+      }
+      select,
+      input,
+      textarea {
+        font: inherit;
+        border: 1px solid #8a9c7d;
+        background: #fff;
+        color: #183b2b;
+        padding: 12px;
+        border-radius: 4px;
+        max-width: 100%;
+      }
+      #jump {
+        font-size: 12px;
+        max-width: 260px;
+        padding: 10px;
+      }
+      label {
+        display: block;
+        font-size: 13px;
+        font-weight: bold;
+        margin: 16px 0;
+      }
+      label input,
+      label textarea {
+        display: block;
+        width: 100%;
+        margin-top: 9px;
+        font-weight: normal;
+      }
+      .notes-grid {
+        display: grid;
+        gap: 5px;
+        grid-template-columns: 1fr;
+      }
+      .sources {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        font-size: 13px;
+        margin-bottom: 23px;
+      }
+      details {
+        font-size: 12px;
+        line-height: 1.6;
+      }
+      summary {
+        cursor: pointer;
+        margin-bottom: 12px;
+      }
+      textarea {
+        width: 100%;
+      }
+      button:focus-visible,
+      a:focus-visible,
+      select:focus-visible,
+      input:focus-visible,
+      textarea:focus-visible {
+        outline: 3px solid #0c77a6;
+        outline-offset: 3px;
+      }
+      h1:focus {
+        outline: none;
+      }
+      .storage-warning {
+        color: #884d0c;
+        padding: 10px 5vw;
+        font-size: 12px;
+      }
+      #exportNotes {
+        margin-top: 10px;
+      }
+      @media (max-width: 760px) {
+        header {
+          height: auto;
+          min-height: 68px;
+          padding: 18px 22px;
+        }
+        header span {
+          display: none;
+        }
+        header strong {
+          font-size: 22px;
+        }
+        .slide {
+          padding: 35px 24px;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 28px;
+          min-height: calc(100dvh - 165px);
+        }
+        h1 {
+          font-size: 36px;
+          letter-spacing: -1px;
+          margin-bottom: 24px;
+        }
+        ol {
+          font-size: 18px;
+          line-height: 1.5;
+        }
+        li {
+          margin-bottom: 17px;
+        }
+        .done p {
+          font-size: 17px;
+        }
+        .note {
+          font-size: 13px;
+        }
+        .slide-extra {
+          flex: auto;
+          min-width: 0;
+          max-width: none;
+        }
+        .slide-extra figure {
+          max-width: 300px;
+          margin: auto;
+        }
+        .notes-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 12px;
+        }
+        footer {
+          padding: 12px 18px;
+          gap: 12px;
+          flex-wrap: wrap;
+        }
+        #jump {
+          max-width: 100%;
+          flex: 1;
+          font-size: 10px;
+        }
+        .progress {
+          display: none;
+        }
+        button {
+          padding: 11px 15px;
+        }
+        #counter {
+          font-size: 10px;
+        }
+        .slide-extra .action {
+          font-size: 15px;
+        }
+      }
+      @media print {
+        header,
+        footer {
+          display: none !important;
+        }
+        .slide[hidden],
+        .slide {
+          display: block !important;
+          break-after: page;
+          min-height: 0;
+          padding: 20px;
+        }
+        .slide-extra {
+          max-width: 400px;
+        }
+        .slide img {
+          max-height: 300px;
+          width: auto;
+        }
+        h1 {
+          font-size: 28px;
+        }
+        ol {
+          font-size: 17px;
+        }
+        button,
+        .action {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <strong>mutual vend.</strong><span>KSJ-4 GRID · SETUP SLIDESHOW</span
+      ><a data-app="" target="_blank" rel="noreferrer">Open shop ↗</a>
+    </header>
+    <div id="storageWarning" class="storage-warning" hidden>
+      Browser storage is unavailable. Export your notes before closing.
+    </div>
+    <main>
+      <section class="slide" id="step-1" aria-labelledby="title-1">
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 01 / 24</p>
+          <h1 id="title-1" tabindex="-1">
+            Set up your KSJ four-compartment machine
+          </h1>
+          <ol>
+            <li>
+              Keep this slideshow open beside the machine. Use Next or the →
+              key.
+            </li>
+            <li>
+              First prove the empty machine works. Then stock one item and test
+              a crypto purchase.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>You have the machine and this guide side by side.</p>
+          </div>
+          <p class="note">
+            This guide is for the exact KSJ-4 grid listing you bought. Firmware
+            compatibility still needs a physical check.
+          </p>
+        </div>
+        <div class="slide-extra">
+          <figure>
+            <img
+              src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gIYSUNDX1BST0ZJTEUAAQEAAAIIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAAGRyWFlaAAABVAAAABRnWFlaAAABaAAAABRiWFlaAAABfAAAABR3dHB0AAABkAAAABRyVFJDAAABpAAAAChnVFJDAAABpAAAAChiVFJDAAABpAAAAChjcHJ0AAABzAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAEYAAAAcAEQAaQBzAHAAbABhAHkAIABQADMAIABHAGEAbQB1AHQAIAB3AGkAdABoACAAcwBSAEcAQgAgAFQAcgBhAG4AcwBmAGUAcgAAWFlaIAAAAAAAAIPeAAA9vv///7tYWVogAAAAAAAASr4AALE2AAAKuVhZWiAAAAAAAAAoOwAAEQwAAMjNWFlaIAAAAAAAAPbWAAEAAAAA0y1wYXJhAAAAAAAEAAAAAmZmAADypwAADVkAABPQAAAKWwAAAAAAAAAAbWx1YwAAAAAAAAABAAAADGVuVVMAAAAgAAAAHABHAG8AbwBnAGwAZQAgAEkAbgBjAC4AIAAyADAAMQA2/9sAQwAGBAUGBQQGBgUGBwcGCAoQCgoJCQoUDg8MEBcUGBgXFBYWGh0lHxobIxwWFiAsICMmJykqKRkfLTAtKDAlKCko/9sAQwEHBwcKCAoTCgoTKBoWGigoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgo/8AAEQgBzAHIAwEiAAIRAQMRAf/EAB0AAAAHAQEBAAAAAAAAAAAAAAABAgMEBQYHCAn/xABhEAABAwMCAgQHBg0ODQQCAwEBAgMEAAURBiESMQcTQVEUIjJhcYGRI5ShsbLRCBUWF0JSVHJzdLPB0iQlMzQ1NlZiY3WCk5WiGCY3Q0RTVWSDksLD4SdFhPA4RmWj8YX/xAAZAQADAQEBAAAAAAAAAAAAAAAAAQIDBAX/xAAyEQACAgICAQMCBAQGAwAAAAAAAQIRAxIhMRMEQVEy8AUiYYEUkaHBFVJxsdHhQpKi/9oADAMBAAIRAxEAPwDBak6V9ZX25OylX2dBbUolEeC+phtsdgHCQT6SSaqhrzV/8Kr/AP2i9+lWZFKFcOzOykaT6vNX/wAKr/8A2i9+lQ+rzV/8Kr//AGi9+lWcoUWwpGj+rzV/8Kr/AP2i9+lRjXmr/wCFV/8A7Re/SrN0BRbCkaX6u9X/AMKr/wD2i9+lQGu9Xfwqv39ovfpVm6MUWwpGk+rvV38Kr9/aL36VD6u9Xfwqv39ovfpVm6FK2OkaT6u9Xfwqv39ovfpUPq71d/Cq/f2i9+lWboUWwpGk+rvV38Kr9/aL36VAa71d/Cq/f2i9+lWboxRbCkaUa71d/Cm/f2i9+lRjXWrv4U37+0Xv0qzYoxRbCkadOudW/wAKb9/aD36VavQGrtTS72puTqK8PI6onhcmuqGcjsKq5imtx0XJ4tQr/BK+MVnlk9XyOKVnb495upAzcpx/46/nqY1dbmTvcZn9er56qo6d6mtJ3rkUpP3G6+CyRc7j93y/65Xz1JauE8850r+uV89V7aamMprSOz9zN0SfD533bJ/rVfPSVT5/3bK/rVfPQCaSpNOakvcE0D6YT/u6V/Wq+ekquNwA/b0r+tV89EU0hadq55Sl8msa+Ajcrh93y/65Xz02u53Hsny/65Xz0lacU0sbVg5z+TZJfBzy7aj1Ai5yUovl1SkLIATLcAHw1EOptRf7eu3vxz56F2QDc5R/lD8dQVIraOWVdmmi+CWrVGoh/wC/Xb34589NK1TqMf8Av929+OfPUNxNMKTWkckvkTjH4LE6r1H/ALfu/vxz56T9Vmo/9v3f345+lVapFMqTitVKXyQ4r4LY6s1H/t+7+/XP0qSdWak/hBd/frn6VVBFJIq9n8meq+C5OrdR/wAILv79c/SpB1dqTH74Lx79c/SqnVSFcqrZ/ItUXR1dqT+EF49+ufpUk6v1Jj98N49+u/pVTGkHlVbP5FSLr6sNS/whvHv139Kh9WGpP4Q3j367+lVHihins/kmkX31X6k/hDePfrv6VA6u1J/CG8e/Xf0qoxQNGzFSLwau1J/CG8e/Xf0qUNXak/hBePfrn6VUQpQo2fyFIvPqu1J/CC8e/XP0qUNW6kP/AOwXf365+lVDTiRT2Y6RdfVZqT+EF39+ufpUadWak3/xgu/v1z9KqXFGO2ls/kVIuHNW6jA21Bd/frn6VUtz1nqhDThRqS9JISTtPdHZ99RO8qorr+wvfeK+Kmm7E0qM630h60Kj/jfqLkf/AHN/u++r2lZrhNc6PrRJcmSVyF25ha3VOqKlKLaSSTnJJPbXjDQXR3qjWzijp+1uvx0kpXJWQ20k93ErYnzDJr29b9M3KNo6BbVFgyY8NphQSs44koAODjvFdxxyPI2rdc6tYvcxDGqL622lwgJRcHgAPQFVVo19rEo/fZqD+0nv0qldKWmbzp2/SBere9FS84VNOKGUOD+KobGsgz5FQxro9L9BHSTfXp8O232a9cYslYaSt9XG62tRwDxHcjOMg0KxXQon/GGyH/fGflihVQdoGcloxRUK4zsDoUBucDnXctJfQ+3G52pqXermm2uOpC0x0s9YtIP224wfNVRi5dEuSj2cNpSa6R0o9E9y0LGROEhE+1rWGy+lHCptR5BSd8A9+av9L9BEy/adt11bvTDKZjCHg2WSSniGcZzTUHdC3VWcZoCr/WumX9K6olWV95L7jBSA4kYCuIAg49ddaR9DpPLQUb9HBIyR1B2+GhQb6G5pdnBqFWL9qcb1G5aELC3UyzECwMBRC+HOK7SPoc5xSCb/ABx5uoPz0lBvobml2cFoVO+lzgvn0scPC6JPgyjjkri4T8Ndt/wcpx/9+j/1CvnoUW+hOaXZwShXT9edDN90pa3bkh5i4QWhl1TIIW2Ptik9noNXem+gaZe7Db7mi9sNJlsIfCCySUhQBxnPnp+OV0HkjVnFqVXex9DnNH/v8f8AqD89cVv1uVaL5cLatYcVDkORysDAVwqKc49VKUHHscZqXREb7K3PRZ++Bz8CfjFaSZ0LSY2jnNQN3hl1pMTwsNBkglPDxYznuougXSrt+nXOW3ISymKlDeFJJ4ivJ+Dh+GoyY5ONJAprs37SiMVPbXVhB0u5IuMyImSgKilIKuHY5GatkaMeA3mN/wDIa5o4Mj6QSnFe5RIXyqU25yqRa7G5NdlIDyUmO4Wzkc+fzUh+AuNdUQlLBUopAVjbftpqEkroltXQsOeegV09dLYu3lgKdC+tUUjAxjl89WH1Mu/dKf8AlNW8eSTpLoSaXZTldNrc89T7lZZMJhTwUl1tO6uHmBTNntTl0YcdbdSgJVw4Iz2VzyxT20rk1i1V2QFrppatjU+DaXJs+VGS8lJYOCSM53xUS+wHLZKbYccC+sSCFAYHPFYSwzUd2uDaMldWcyuIzPkH+UV8dRFprb600e5YYYnOS0uh17g4AjGM5P5qXpro/l3iEiXJkJiMODLficSlDvxkYFWsGTbSuTbzQ12vg586mmFpxXRdT9HMy1wHJcOSmY02OJxPBwqA7wN81z1YqpY5Y3UkKM4zVxZGVTRqSvFNEiriJkdQpBp9QpsitEZsZUKaNPrFNKFUSJNJPKlURFWIRmhR8NFjFMkOgBRilCgQQFHQoxQAYFOAbUhPOnKACIoAUoCjoAbcG1XPRvo36s9Uphv5FvZT1kkjtT9r6+VUzp2rtf0NDTZg3x7brutQjz8OM/HWmJXKiMjqJ1NyRY9IWiMw45EtdvbwyygkITnsSkdpples9OItiLgq9QvBFkpSvrBkkcxw88juxVZqtTFp1Zab9ckZt7bSopd4ciMtR2WdtgeWeyro2yx2+fK1CY0RiU40Oum4AJQO813HIMXWBYtdaadjPGLcrZKSQHG1BYB70kclCvDmvtKSNGarnWaQorDKuJpzGONs7pPsr23ouMvr7vcktKjwrg+l6OwpAQQAnBWQOXEd99++vPn0W7DSNXWZ1AHWuxDx+pWBUyXA0VfQsjF8sp/3tn5YoVI6Gk4vNm/G2flihU4wZxPIoAjNJ4HO6h1bhrmOmy80YllzV9kRJ4SwqayHArlw8Yzn1V6r+iGmXi36BEqxSZEZTUlBfcYUUqDeD2jkM8NeO0IdQtK0khSTkEdhr2B0S9JFu1zZk2m8dUm8pa6t9h0AokpxgqSDscjmn81a43xRnPuzIa46UtLag6KZVqXclP3h6I0FNmO4MupKSd+HHMHtrqnRY4lvoz02twhKfAWRn+iK4J04dErWl0Kvunwr6UrWA9HJyY6idiD9oTt5jjv265ZpSoPQLbpSThTFsac9gBq43tyTKteDnHTJZPCenbTqOr4kTzGKxjmEuYV/dFejgpPCtAIykbjurBaos/0x6TdE3RtAUhhuSpauYxwDh+FdXumZxm3XVAzkRp6WB6o7Kj/eUqqiqbE+UeV9MQfpj06NR8ZH05ccPoS4pX5q9dpuTZv7lryOtTGTJx/FKlJ/6a839DVv8K6d7u+obRHZbvrKykfKrqjNzCvohJEMK2FjDZH8YOBfxKNTDgc+Tz3reCbd003GORjN1DwHmcWFj4FV6N6d7xPsfR+9NtMp2LKS+2kONnBwc5Fce6dLd4J00wJAG0xMZ4nzhXB8SBXobW1usN1sSo2qyyLYXEqV1r5ZTxDl4wI+OiK7QP2KbSlwf1B0Qxpd3UHnpVuV16iMcfikEn01xLoJ1xqGbrSzWOTcXF2pLam0sFKcBKUHhGcZ2wK7R0iolWnorms6PjRvB2onVpCVn3OPw4UpHPiIT3nz7nY+eegNPD0p2jHc5+TVSk6khpWmda+iN1XfNMfSAWCe5E8I6/reBIPFw8GOY85rzTMkyp82RLlrLkh9xTriyPKUo5J9prv30Vvl6Z/+R/2q4Ims8r5LxLg9baHWq/8AQiwwrdbttdin0hKkfmFZ36F6KEaSu0ojdycW/UltJ/6jVl9DlMEvQDsVW/g8laMeZQCvzmp3QtAFh6OpAc24ZUpav6Cyj/orRc0yHxaLnRcjwm935ecjrtj5gpWKq9VX64Q79Ijx5SkNp4cJAG2Ug0XRI6XVXRSjk+IT/erTXNrTqpzirgYAl7cfWLAVy2z6q54qU8PDrkp1GZX9Hzy5DM5x1XEtTgUo95OakalY4b3aJCRspwNq9oI/PUDo1UFR7hwEYDoxj11dFZusBtwDLkeYNh/FcwfgqoLbCl99ilxNkHW6+B61jvcP/TU/V0p6HZlux3C24FpHEPTVT0gL4ZFpHe4r401L6QVcOmXD/HR8dKcmnkr74HGP0k+xPruNgackkLU4lSVHHPciq3o/XxWyR5niP7oqToZfHpWIfMr5Rqu6MF8dmlE/dB+SmhO542/h/wBhtVGaXyOaYVnU97Hcr/qNJ6Q45MOJKSN2nQg+hX/kD201pBfFqy/p7lf9Rq1un67Wq8REp4nY6ylKRzKgErT8JApRip4HB+9/7lN65FL/AEM/0xb6dig9spI/uqq01nKeteg5LsJZadbabQhSdikFSU7eo1VdMf73on42n5Kqn9JYz0eTPvGfloq5fXka+BR+mC/UqNHaztv1LMs3y5o8NHGlYdClKI4jjJx3YrjD5Txq4TlOdq7i30Z6cLBWjwpW3Prs/mrhksBt9xCeSVED21y51PWO504XBt6jKzvTRNKJptRrBGzATTZNGTSCa0RmwlGmzRqNINWkQwjRUZoqoQMURFHQpiE4oxR4oAUCBRijApYAoAICnEiixSkigAxQVShRKpiGHRtW56C9Vsaf1S5CnuBuJPAQFq5JWORPp5ViHeVZ2+kpgSiCQQ2ogj0VUXTsUlao96SGWpMdxmQ2h1lxJStChkKB5gispa9F+CSQxIuLsqxR19ZDtzichpXcpWcrSPsUnl568wdF/wBERfNORmLZqCN9OoKMIbdLnA+2OQHFghQHn389esJmpo8W3GWqO+QEcfBsOzlzrus43wXjziGWluurShtAKlKUcAAcya8P9NWrm9Y67lTIauKAxiPHP2yU81es1c9LvTFfdVNv2uIkWu1cRQtppZUt4A/Zq228wA9dcoYGEJqZMEdv6G0/rvZ/xpn5YoU/0OpH01tB/wB6Z+WKFEBs4hgUNhSc0M1ynSW2mLc3edSWu2uuKbblym2FLTzSFKAyPbXTelLo6jdHEK2Xa03KY5JVI4QtWE8BAyCCO3auSW+W7AnR5cZXC+w4l1Cu5STkH2ivUNt6WtC6osrLWqUssPDCnIsuMp5sLHakhJB82cGrik+yJWaXU0k3joTuEucE9ZIsqpC8jYL6riHw4qlc/wDxtGOf0lHyBWM6Yel21XPTz1g0sVvtyQEPyS2W0JbB8hIOCc4wdsY787KX0k6ZPQsNPCa59NfpYI3VdQvHWcOMcWMeutdlZGro7Pod9Fz0lYZ6gFOqhowo8wSkZ+Ksp0JzvplE1fM4uJL9+krSf4pS3j4MVjOjrpYsFi6N41uuEt1N0jNOoQ0lhagTlRQOIDHaO2qvoK6Q9O6U0rPhX6Y4zJemreSEsLXlJQgZykHtSaey4Fq+S96BIOdfa4nkeRKWyPW6sn4hXRxq3SY1h9LA/G+n5X1H7AePix5PHju89cn6LekbSum/qhduc51t2fc3ZDfDGcVlonxTsPOdq5l9UrCelYaiDivA/psJZVwnPVdbk7c/J7KnbVFa2zrn0RkHGpdHzkp8p8srV/TQUj5Vab6I/wDyZvfjLXxmsT0udI2lNT2y0otc51yRDuDUghUZxPiDIVuR5x7Kd6ZeknTGqdEO26zznHpZeQsIUwtAwM53IxQ2lYknaOhdHhL3Qtbw6SofS5Sd+7Ch8VcA6BT/AOqFo9Dn5NVdG0N0o6WtvRxCstwnOszm4y2VJ8HcUASVAbgEciK5L0UXqFp7XVtuV1dLURnj41pQVYyggbDfmaUmm0Wk6Z1P6K7y9M+iR/2q4Iiur9PmtbJrBdkNikrfEUPdbxNKRji4MeUBnyTXJkms8nLKx8I9BfQtzci/QieRaeA9oPxCunajaRp7QF4QgjCuvUPS86o/GuvOXQnrC26Q1TJlXt9bEJ6MpsqS2pfjcQI2SCe+tz0udLGm9R6Odtenpzzst19sqBYcbwhJ4icqAHMCri/yNESX57Nf0Il4m7dahSUnq+EkYz5VUPSQzcVawnrjMuKaPBgjH2grNdCfSBbNOJuadSTn0h0Nhn3NbnLizyBxzFdQHTFohXOc8T+KOfo1ksaeJQstyam5JCuh5uU3BuPhiVJJWjAOO41Y6Cnuu3S/wnm1JDcpTiCRsQSQcewVhdIdJ9hgXjUbtznvCNJl9ZE9wWr3PxuwDbmOdZrS3SQ3bekKbOnynTY3lPeN1ZOEk5SeEDPYPbTj+RRS9rE05bHSul+5sW6ZpxL7gQXn1JSMczlHz1a9LEsRdHOuZA91bGT5zXHul3XOndX3XSqrRLdfRDkrceyytvhBKMcwM+Sa6u50l6SkN9W9IcdQd+FUVZHwinLS5JvsIqVRaXRbdHhcGioS3klKilStxjbiOD7KquiF9TthmFaFIIkkYUkj7BNZ/WfSgyu0PQ9LMvqlOp4BIcRwJaB5kA7k+oVH6LtZs2yySm9TS3TLXJK0ENKV4nCkDyR3g1CnBTirVJF6TcZNrs0WhJHW651M3jHAsj+8al6fuiU9JF/tpV+yIQ6n0pSkH5XwVi9K6zg2zV9+m3SS6IMlX6nIZUrbiJ5AZG3fVA5qxhnpZ+n0dxxVsLqQpRQQerLYSo8PPbc+qphOKUefd/3HKDcnx7HR+m9XBpmEf97T8lVWPSZlXRvNI39zZP8AfRWC6Wdb2XUFgjxbTIcdfRIDhCmVJ24SOZHnFXukukmxTtOtQtSOBh9DYadS60VoeAGM7A8+0GtXODnJX2iNZKMXXTLfofPFoNlW+C67jz+NXBLir9Wvj+UV8ddtidJ2lYrr0KNxR4DKAGVtsKCVE5yAkDYDbn3muDS3g5KeWk5SpaiPRmsc1aRindG2FvaTaqxXFQJpjjocdYJGzY4TSCqkk0RNWkQ2Amk0dFVCCoUdDFAg6KjoDnTAAoGjIpNMQpNLAzSE04KBBgUsCkilpoAOiVSqIimIYcFZ3UW1umfglfFWkcG1TdE6MXrnUQtalKbh8PFJcTzSjPIec8qcVboUnSOS6K0dqDVlwS1p61SZvApPWLQnCEbjylnCR6zXu+82S4SLKthlpKnS3gJ4wN8U6Zum+j222+zx47saPwkMMRIjjyiBzUQhJOe8mrB/VNuYszN0Wif4K6eFITBeU562wniHrFd1HG+TwvriyXOx3d6PeIMiG6pZUkOoxxDPMHkR5xVM35Ca913KJpzpQ03LhPtOPMJUUcT0dbLrDmOYCwCDXjXWemJOk9STLPM3WwvCV/bpPkq9YqJKho6v0Oj9crR+MtfLFCnuhxAE+1d4kNfLFCqiI4HQo8UMVxnUKaQVuJSOaiBXZE/Q+6mIz4fav6xf6NcgiD9Utffj46+gSCAhAJAJ5eetscFIicmjwfFscqTqZqxI4RNXLEPfPCFlfDv5s10qT0BaljxnX3J1q4G0FZw4vOAM/a1YWexpb+iZdjEZQ3LdmnzZbLg+FSa9F3hQVZpwBz7isf3TRGFpic2ujwpYrY/erxDtsQpD8p1LKCvkCTjJx2V1F3oA1Q22tfhtpISCcBxeT/cqg6BYRmdKFo8XiQwXHl+YBBAPtIr1s3PQ9dpluGONhlp1XocKwPkUQhaHKTTPBYSVEJAJJ2xXWtNdBWoLtb2pU6TGtwdSFJZdBU4B2cQGw9Gc1Rafs7TXTVHtbiPcGbspASftUrJHxCu79P8AqW66X0vb5Fik+CyHpYbU4EhR4QhRxv5wKIxXLY5SfSOB6/6Mb3optEicGZMFauESGCSlJ7AoEZB+CrC3dD99n6WavzEu3iI5HMkIUtYXwgE48nGdq7vruZHvfQzNeluMrfetiZJSCP2TgC9h6ad0cM9CcP8AmpfyFU3BWTu6PN3R70fXTXKZ5tciIz4GUBzwhShni4sYwD9qadjdHN1f15I0mmRDFwZR1inCpXVkcIVscZ5KHZXUfoVk4RqfH20b/u1KtQH+E5cz2+Df9pFJRVIeztnKNTdGt205fbPa50iEt+5uhplTSlFKSVBPjZSO1Q76sdYdEV90rYH7tNkQXozJSFJYWoq3IGd0jvrpfTX/AJStAfjiPyzddU1jbBedLXO3kDikR1oTkZwrGx9uKNE7Fu+DynpHoovesLH9NbdJgNR+NSOF9agrKefJJqD0b9GN31tDlTrVKgstR3+oWH1KBJ4QrIwk7biu/wD0PaVJ6N1IcHCoSXgR3GqL6FEY0nfP5xP5NFOONcBKTVmU+sJqZI/b1q2/lF/oVyx9lUaU6wsgraWUEjlkHFdj150q6otGsLtboUiOmNHeKGwphJIGB21yB1SpEhx5zHG4srVjvJyaynqujSFvsU0grI2qRJZCYTyjzCCfgpcRG42qbcGkt2iU66QkBs8/RXO5c0bJcWYexv8AHdYbZOAp0AnzV16IIYIT1zfF3cQrgzLhGCCQQedTWZK21BSHFBXeDV5sG/TJxZtUei4MBMgAs8Kx3g5qYq0OAbIridi1ZKYUkB5TchHkOJOy/MoV2zR2p2r9bcrCUy29nEj4/RXl5cc8fZ3QyRn0QnrbwZLjZ9lVr8FBJwmtw8QobgVWSYrawSBg1EZsukYp+CgDyd6r3WOE7CtZLj4BqmkNbnaumMjKUSjU2QaSUmrB1HmqMpNbpmLRHxR4p0ppBG9USJoUrFERgVRIiio6GKYB0KFCmAKNPOk0eKBCqLFGKUkUCCSKcoAUeKYBpFLxRJFLxTAICjxRgUqgRHfHin0V2X6GmO34Je5OB13Wobz/ABcZ+OuOv+SfRW56B9TsWXU79unOJbjzwEoWo4AcB2z6eVaYnUlZGRXE7pqGNwT03KO+kzo0R4MxtsuEjmO2sVGmtR7bZbjC1HLlXmS+hLsZyYXEulR8ZHUk4Rw78gCMb1q9UwL6b3b7np+Pb5K2G1trbmPraGFdoKUKqJcbBJkW9qanTOnV6gU4lbqutU2AQdiHkt8ZPqrsOUv7JBYhzbo4zJS8uRI6xxIx7mceSd685fRXxmmtXWh9AHWvRTx+pWBXftGwLnARdJV+RCYkSny+URnlOIQnH2ykp+KvKfTpqlrVWu33oauOFFxHZUOSscyPSamfQ0bfoeH6ttR/3hr5QoU50QDEu0/jDXyhQoj0I8+UKAFHw1yHWPxP2y19+Pjr3HqWd4C7YVE4S7OSyr+khY+PFeHIn7Za+/Hx1686bJv0u01ZpmcBi7RXD6ATn4K3xOk2ZTVtIKBYktdOl0u3DlC7Q2ok9i1L4PiaNXtlnfTLSN0lcXEFPTkJPelLziB8CRVzOVHhR5l2UkcSY2Vq70IClD5SvbWF6IHVv9C8V505ccalKUT2kuuE1p0Z9nLPoW4Rd1hdJmMpjxODPcVqGPkGuqaYu3X9Nms4HFkIixAkfeJyfhdrK/QrQeCy3ucRu7ISyPQlOf8Aqrpttc0n9VUp23PW06ge4m3uqcSXlcOOIEZztwj2VEOEipdnELzB8B+iYi4ThL8pt9Pny3v8INaz6Kf959o/Hv8AtqpPSLbyz066MnAeLIARnzoKv0hS/opd9I2cf79/21Uq4Y/dHmQb17S6MmGpXRZZWJAyy7CCFjOMpIIO/orjNw6GrfF6PnNRJuspTybeJnUlCeHiKArGe6usaO/yJxP5qX8hVKCpjm76LzRmkbDpUSxp6OWfCSgve7Kczw5x5ROPKNcztX/5OXT8W/7SKh/Qp/sepvvo/wD3amWr/wDJy6fi3/aRVXdUT02hzpr/AMpXR/8AjiPyzddZuV0RDu9shuEATesQjPapKeL4gquT9NQz0l9H/wCOI/LN1f8ATNczZZ2kLhkhLNyBWR9qUkK+Ami6tg1aRodEWz6URL3FCeFHh77qBj7FeFD46559CkP8VL5/OJ/JortSsFhak4wUk579q4t9CoMaVvf84n8min00J9M1uoujbSNxmzrhOiqVOe4nFq8KWnKsdwVivLaWvdlJSPFBIrSdJ6D9cO+nGcyT8QqljgJxsM1zZZX0joxxrtkphKGUhbhCQO0nFU2uJxcgMsR1caXFZUUnIwKRq5t9+2ISwlSsODiSnmRisRKEmOgB1txA7OIECs8eNN7WVkm0taGlJUlWMY3p4IdCCrhPCO2q7rlqyTnIpovuAnCjvXVq2c90Wgd4Tzwa3PRxfFQtRRFKWerePVLGeYP/AJxXOEKUrBNW1kdU3OicJ8YOpI9tY5sW0WmaY8mskz1Ut8KGxphx0GoDDwU0kk7kCjU4K8NQPXsU7gg5qslMA5IqYpYNMOK51rEhlJIaKTyqE6nuq8cSFg5qtkM4JxXQmZSRXkUkinlJxSMVqjNjZFIVypxQpCqsgboUeKGKokKio8UMUAAClYogaWBmmIIClpFDFGKAFAUYFAUoUwFJFLApIpaRSEDFDG1K4aUBtTQEd5Pin0VmNRBSbdKUgkKS2SCDggjetY4MpPorP3ZouRX2/tkKHwVS7E+Ua3ot+iQnWmLHter4blyYRwttzGFAPAchxA7K9OQfTXpG6a5tNttypjwkLbCeLhQgEn2nFfOZtXVuhXak59lesb3ORK6P4T5cBU7DbWd+0oBNdqZxS4Ml0r9OV01NGctVkYVa7Y54rquPLzo7iRskeYe2uUIc4g2POKi3E4Xnz0uKsKU36RUSGj0N0SjE20/jDXyxQpPRSofTC0fjLXyhQqo9Aefk8qVRJ5UquQ6xcchMhsk4AUCT669HdP2rLBeNAoi2m8wJckSm1dWw+lasAHJwDXm6hVKVJomUb5PVGqOkSxSOiaYGbvBXc5Nt6rwZD6S4FrQEkcOc5HEc+ionRZq7T1t6JIkCferfHmJZkAsuPpSsErWRsTnfI9teY6Imq8jsWnFHpnoM1PpqwdH7Me43u3RZjrzjrjTshKVDJwMgnuArkPR5qJqP0rQb1NeQyy7MdW64tQCUhwKBJPYPGrCUpNG/QKJ6L6bNX2ZcjTV3sN0gT5ltmdYWmH0qVwYBOcdhxj11tlai0H0hWBhF0mwHGQpLpjSnwy40sDuyD2kZGx89eQKFNT5sWh6W6aekGxM6QkafsEyPKkyWwwRFUFNstbZBI2zgYwKn6X1fp2J0RxrfIvdubmptqmywqQkL4uE7YznNeWwcUY3pbu7Hoqo7d9DhqOzWFu/m9XOJB64sdX4Q6EceOszjPPGR7amWzUllT9EHcbubrCFsXH4Uyi8kNk9WgY4s45g1wNQzTjewxS2pA427O+9LWprJP1/oqXBusKTGjSkKecaeSpLYDrZyog7bA+yj+iD1NZ75ZLU3ZbpEmONSSpaWHUrKRwnc4NcER4y6kI2qXN0y1BcHrDSXSJp1zR9sVc77b483wZKHW3pCUrCgMHIJz2Vz/wCht1PY7Npu7M3W6wYbrk7rEIfeSgqT1aRkAnlkGuCTk8sjemIe0nFUsrfLJeNHsWZP6NZspyTKf00++4eJbjimlKUe8k15zvxjm+3Awur8G8Ic6rq8cPDxHGMdmKpUbgVMa5VlknsXCGpISaodYR/CIAKRlbZ4vV21e48XNVd6yY7n3prKK/MmaS6OalIwr000tFSUtqcd4EDJJpxUCT/qVV6BwkRB4U1d6SjrlXVpWPEQoHJ76jRLNIdUOMcCe+ttp+E3HKENjHDzrPJLhmmONs6hDd9xRnuFSFOjFVUJZ6lIJ7Kk8deM40z1E+CQXqbU6DTRNNrOKaQNjhXTLmFURJxSc1aRLZGfa7qiqTg1PUaYcQDWkSGQl02edPuJxTCq1MxNCizR5qiQqBo8UMUwCTTgpITSqBChR4ok0vFAASKcSKSkU6mmIMClgUSRTiU0AEBSsbUaU0rhoAb4cpNVE9GFVdhOxqunt0wOJXFkx7jIaP2Dih8NbqFf5rthixOt9wQ2Egeis3raN1F8WsDxXUhXr5Gis7q1wShtKlKbVyA7D/5B9tdafCZxyXI5czk01Bc8dAz9kKOVHlu7pju/8ppqFEkpdTxMuDcfYmhiR6H6J3f11soz/pTPyxQqD0TLUL7ZEqBH6rZ5/fihVRA4s2qnc1IXapLfkYcHmphbTrfltqB84rkOskWxpuRcYzL6+raccSla/tQTua3eqLxMj6hven2LUw7b2C6w1DTGGWkIzh0EDiyAOLizv27VzgKweeDWhd1hfJMFUN+4OLaU2GVKKU9YtA5JU5jiKfMTiqTE0aCbpO2suXW3IVK+mVut3h631OJLThCUqUgJ4cgYVsc8wO/aTdtNadgvX9Ibubn0neZQr3dAD4c2x5Hi4PbvnzdmSkaku8i2mA7NWqKpCWlDhSFKQnyUqXjiUkYGASQMDupp6+XF9U4vylrM5SFSSQPdCnySduzzUcC5NhetMWGwQp8yYm4S2mp6YraG3UtngU0HAVHhO4zjlvUiHoSA1qJy2TzJLTtx8CjyDIbZHCUoUMJIJWsdYnIAAHLO+1FH11cWbK/HDylTnZiZK3nG0LQUhsJAKVAjIwCDjaoEXV99iFSmLi4FqkGVxrQlag6cZWFKBIJwM4Iz25p8ByW8yx2i1RITM5FwkTJrDjyXYxTwtYUpKRwEZVugk7jANMdIDFrY+kQtMRccu21p10lYVxEjmcJHjc8nt7hVUzqi8tQVxETlhlXHzQkqTx+UEqxlIPaAQDSW9RXVuM2wJhLTcdcRI4EkhlflIzjJHdk7dmKVoZoLIoWjQMi8Q0N/TFy4piKeUhKyy31ZUMAg4KjkZ/i4p9yM3doE2/3y3uMiOywA3GT1HhSlqUA6SQQBhKskDBI9NZay3e6W1x36VvuNh4BLjYQHEOAcuJCgUnHnG1WqLxqgTnpoXKW++gNudY0FoWgcklCgU4GBgYwOyi6AuZOm7JboMy4SvDn448BcjspcShfDIacXwrVwnccHMDfzZ2ek6EifTZ2NGkvqZiTy1LUrGURy31iV7DnwhYPnArH3WfeXjJ+mbsj9VuIedDiQONSApKTy2wFEADYA1ITqW6lVwWqa7xz0BuURgdakYwDt5hyotCpmpXpSzRbahUiaG5D8EzW1rkpGCUlSG+r4cnIAGc8zywKVP01aW3LjFiGYJcKCxOLq3ElCuMNFSeEJz/nNjnsrJN3+6ptxgomKEYoLWOFJUEE5KAvHEEntSDg91O/Tu4qcfdVJUXJDKY7qsDxm0hICeXZwJ9lS2i0mbW/aXthuEiReJilCRcFxQ4qQ2ypCUhPEvBT4x8byRjl56qrLpOxmfYYTr0yRKuxkITJaWlLTfA8ttCwkglQPCDjI+bPL1Xe4z7rzU9XWPO9esqbQr3TlxpBB4VecYNQIOoLmifBdTMX1sLi8HUQCW+JRUrs3ypRO/fQmhNM1+oWbazp3TiocVbUl6MpbrhcBCyHVg5GOeRtvywOzNWPR7EUlybdi3Fc8CbAaRJcQhC3VnAB4yAcJ4z/RrMQr7co8aOw3KIbjhYaBQklAWCFAEjODk7eeg1Ok+A+Bh0+C9Z1vV4GOPGM9/Ks3V2XVqjo0i1w4Luo4q9rat2K62ttQVhlxwEcJGQcBWM8siq6boWGhgCdJeStl11UsJx4sdIWQoec9Wr2is6m6znIAiLkKVHCEtBBA8lKioDOM4CiTTV11BdX0TlOTXSqRG8HdO3jNgbJ5eanGSsUk6K+06MtZtrkh5EpmbGhs3FQXKbKnErcbBHVAEoSUuAhSjnkcb1pX9F2mDMP0wluohvy+riuA+UzwcfGdj2LbGezJ7q5fbNYX9bsa2u3Bww1oTFWjq0cS2k4KUKVjiIHCMZO3ZiuiXbUch6Vbl25ciO3b2AxH6xzjWBuSScY3ydsYxgdldM2kYRRA1JZG4FxitwGHA3IaC2x16H0rPEU+ItOxGR24IORXRLvYojVoaiLRFCbM4yhxyM82p1xC8B4qCSVAhzGOIbZrnwus924Rpq3x4RH4epKW0JS3g5HCkAJG+/LnUy3TJUZ6Q428oLkoUh0nfjCtyDmsJSRrGLs2zWn24Tgakh11Zed4AhSUgsoTnjJOwB237gedTHbUyxClvx3lhtyAiRwBSVjPhCUY4sbjbO2KzDV9uJkMvrlKU6y11LZUAQEYxw4IwRg9tOO3mc8FB2SopU11BTwgDq+PjCQANhxb7VzPX4Oj8xsJdnjz9RThJStsPz3WW19ahAGD9ik5KiMjPIct6iphQpf0jt76Xw/IYUhDqCAlB6xYBIxvvz3G1Z8aiuqVqWiWoLLpe4uBJIWeZBxtntxzpDd+ubccMIlKDaUlCfFGUg5zwnGRnJziq2j8E6y+TSPWxiTDiyZKgGY1uYJQHA3xqU4seUQQNgfgrLXlliLOW3EeDzOEqSoEHGQDjI2OOWfNQYvE9hSSiQcJaDASpKVJKAchJSRgjO+9NSLjMkNOtvyFrQ64HVg43UBgH1DbHKk6aKWyZG4sikKVRGkGkkNiHBmmFJp9VIUKtEsjlNJxinVCkY76ogTRjnSuGhw4piBQoUYFACkilUANqFMBSadTTSadTyoEOJpxPKm0U6BQApNKogKWBTANI2qJNbynNTkppD6OJBoA5l0gwesjpkJHjNnPq5H81UOg7q1aNTQpEoBUXjCHk4zlB2NdD1BEDzBSoZSQQR5jXI50dUKa6yvOUHY947DXRjdqjnyR9z147brCpoLSWSgjIIxuKpZzFgbGQprb0VwhrUdyctbAYkK4WkhtYzy7j/8Ae6oL13nujx31Vq8vsYrD7nofStytrerLIzHW3xLnMJAHeXE0K4j0ayJC+kzSQW6og3eJnf8AlkUKUHZTjqX0cZAqyZZS5gKSCPOKiRGjgVdRY2QK4rO0RGsEe4yG47UVDjrhwBirpzogLgyHmWz5lH5qutDRw3fGldvAr4q6QK8f8Q9dlwZFDH8G+LEpK2cSX0NSv83cWR6Qfmpo9DVx7LlF/wCVVa+0a7kCXq1F3aYS3ay87E6sEF5ttakFJyfK4gkbfbik2HWsv6XQn9QqDUsInGTHjMApV4OrBwoqyCMct857KyfqfWq+V9qwrEZEdDFzzvcYnsV81Ot9DM0Dx7lH9STW4na5iqtU5wNz7a81GbltqfjoWXGlrCQpKQvfc4wSCM8qm6tu1yjXOwQLS7HZXcX3G1uvslwJCWlL2SFJ+176let9XaUml37fCsemKrRh4/Q+lBBelJc82SPzVbR+jOLHOUtxlHvVk1Zs60VbHrhA1A2h24RXmmmvA08Ik9YCUYClYSfFVnKsDGc06vX9uLUbqIc5+W8480YjYb61CmscYOVhJPjJwEkk5GM0/wCM9b7f7IahiGWtGuNDDRjIH8VOPzUs6Tlf69n4aONq4N6nudufDrzhcjphRG2wHcKaC1lQOMAZySeXLntSbZrrrm55nWqYhbU8wYzTaUKU+vfCR4+AQASScJA7af8AG+tXx7ey9xa4Sl1X0e3K7xY7UeTFQptZUSvi5Y9FZpPQ/egd5sHHpV81dLVraCEx0Ig3Fcx6U5D8DS2jrUOoRxlKsq4R4uCCCRgg5xTytQu3TSlxn2Bspnxg4jweSjxkOo8ptQB5+g43FQ/X+sVXX8kPx4n0czHRHeB/psH2q+al/WmvH3ZB9qvmrbv62aSu2yQttFtNvVcZqykqUhBwltKcfZKUVbfxakK15AbQ74RCntSW3WWTGKUKcJdJCCOFZSQSCOeQRuKH6v1vf9gUcRzp/ogvDuP1dBGPOr5qaY6Gry29xm4QSO7xvmrpqNbwlo6tMC4G4+EqieAcCOu40p4jvx8GAkg54sb1TWjWry3Eu3Fb7bfhVxT1Ajp4i2wAQlR4hwqA9OT3c6a9X6x31/IHHFZmx0VXf7she1XzU810X3VPOXD9qvmrZR9f2txlTsiLcIjZhpnNF9pPuzRIA4AlR3ypIwcHcVY2bUzNzusm2rt8+FMjsofWiUlA8VZIGClSgfJP/wDuaiXrPWRTb/2KUMd0YVHRtckjHhcT2q+amZHRlc3G1hMyGCQQN1fNV/b9UT3tTOQ5s23QXEzFsi2ymVtuOMAkBxt0nCyRhWAMdm3OrRGtIUkgMx5bTMjrUxJjjaepfWgEkJwon7E4yADg4qn6r1kX7fyJ1xvs5JA6EL0zPYfcuEAhtfEQOL5q1J6MbkOUuL/e+atVY9ZMq02ZdwS8uTEtTFxlFCEgKC0KPijPPxFbbDlUeVrZ4vX5nwSRDYgNsLbldWhwnjPanj7ez15xsKr+N9a2064/T7+SFjxRRQI6N7knGZUT+981SkaAnpx+qYvtV81ahWs4KbiY5jzDFTJENU4Np6hLxIAQTxcXMgZ4cZOM0i260gz7hFjtwbg21JfeitSXG0hpTrZVxJ2UT9grBxg478is36z1lX/Y1UcXSM+nQs8f6TG9p+aqi82mVaH0tygkhYyhaTkKrr+PNWL6Sv2vb/vl/EKfpPW5cmVQl0yp41FWjCjlR0Qo69mjAI0KPFJO1FAJPbSTRmiNMViFDekqG1LNJO9WIaIpJG9OHek00SxOKI0omiqiQhSqAoxTAMcqFGKPFAASKdSKbTTgoEOoFOCkJ7KcFMAxTqeVNgUtNCEOilYokb05imBUXNgLbUMVzXWVpLiPCGk5cbG/nT/4rrcloKTnFZi7xCeLA84qouiZKzkVrl+CveMniaXstPeKtZDQb4VIPE0sZQrvHz0xqK1GG8p5lPuCjuB9ifmqPbJ6W0+DyQVMK9qT3jz/AP8AnnGzVq0Yp1wzUdGi8dJukh//AC8T8sihQ6PWVM9KOjt+JtV4iFKxyPu6PYfNQqsfQpnQIMQ7bVfRY2w2qdFt6EgeLVi1EAxtXGkdY/pVoNXVsk80kfBW4HKsa0wW1JWglKknIIqxTPlgY6zPqFeX678PyeoyKcGujbHmUFTKx7QMR+Uy+5Ld4m7i7PUAkALStYcLSt908SEH+jQc0Ey4kgz3BkThs2P9KVxHt+x+GrUT5X249gpQnSu1wewVl/h3rf8AMvv9heXF8FRe9DIuaSnw9bYNvRb9mgdkuJXxc/4uMVZ6l0+9dn7XIh3AwZVvcW4251IcB4kFBBBI7Cac8Ok/b/BSTPldix7KX+Ger4ey4/v+w/NiqqKaT0fxpUR5UqauTdXZKJS5khlCwpaUlKUlvHDwAEjh8/OlSdDl6ypt/hsQtqLinULtrJaUVgDiSgY4VJxscnz5q1VcJQ+zHsFMquksH9k/uiq/w71vH5l9/sLzYvgr2ej6JHmmfHmOpuKDG6mUpAU4gNNhspJz4wWM8Q25+YU45opfXSnY90cZWqd9MYxDIJYdKSlWd/HSQSMbempDl2mDZLoz96Kr5t8uqHEoadGe3xBUv8P9Z7yX3+w1kxP2I0/R1xauVmfgz3FzDPfmzJxbTgKUwUD3PPk4SlOM5x253rVaYsqbJBeaLypL8h5cmQ8pIT1jijucDkOQA81cl6QNd6js8iG3DnJb6xKiodUk8iO8VnI/SfqxRwq4IP8AwEfNU5Pw/wBTOKUmvv8AYcckI8pHX4/R7b27RfLe7IedZuZwk4AMdsKKkITzyEqJO/fRx9EBLCEvS2OtTKYk5jQW46fclZAwnfck5JJ8wFcsR0k6nPOcn+pR81ODpH1Mf9NT/Uo+ak/Rerf/AJL7/Yalj+DqkrRgVcnrlDuC41xVMVLbcLQWlHE2EKQU5GQQnvFRWNAhIQXro68sLnOLWpoArMlICuRwMYz5/NXK5nSbqhvZE5Cf+Cj5qjRelLVa5PAq4IIx/qEfNTXofV1Skvv9gc8fwddvWjErtLKGlOynYlr8AbaSoNlwgoIWFHISrKBzBFHoi03ZvUFxut4VKV1sZmO2ZQaStRQVknhbJAHjDtyTk1zpPSHqRQH6tR/VJ+apbOvtQqxmYn+qT81J+i9To4NrkNoWmdDl6QkTZTSZt6kyLYzLExEZ1sKcCwriCetO/ADyGM42zTUXQ4Y8FjruTrlshKcXEi9UAW1LCh4y+agApWBgc981j061vpA/VSf6tPzU8NZ3wj9sp/q0/NU/wfqqrZff7FbY/g0T2gT4CqHFu7rDL1sbtkn3BKi4ltKglQyfFPjqzzyD2HepNx0SZT9xLdyW0xPYZadb6kK8Zo+KoHO22dqyJ1lfPupP9Wn5qH1Z3z7qH9Wn5qf8J6v/ADL7/b9BXj+DYr0YFSVoFxdFrcmpnrh9WMl0KC8cfMJ4gDjGfPUi36Tahx7Y14StfgM96ck8GOIuF08PPbHW8/NWHTrK+dsof1afmpY1je/upP8AVp+ak/Q+qapyX3+wKeP4OuGsT0lKHUW8ZGeJZx7KzadYXo85Sf6tPzVXT7hKuL/XTHS4sDAzyA8wp+l/D8mHKpya4LnlUlSGwaGaSmlAV65gHmiIo8UKYWNkUk08QCKbUmgQ3SaWRimzVCE0k0qixTENk0nO9LUKTiqJFClUihmgBwGlCkAijzTEODspYppJpwGgB9PZTiaZSqnEqpgOilJpsGnEkU0IfRS6bQacBoAMjIqtuDBIJA5VZikPI4hR0DMHeISVoV4oUkjCgRXOrzaVw1lxpJUx8Kf/ABXZZ0bgUdtjWeuUAYKkpyk8xWsWYyRmOiSY430k6TYV47S7vDHCrfB65GDQq40JZQjpP0m/G8QJvERSkdmOuRyoVvGvYyZ6NZtYwCoAVKTBZSnyc1PKQkU0ck1zqKR0uVkZMRojkRUeS02hzCKnrUG0FRqqedHjLWoAdpND4GgwkUYFPRoM99PEzAlrR9t1ZA+HFB1txhwNyWXWHDyS6gpz6M8/VVom0NY81IUmnyMUlQqhERwVFc2qe4nNMhoKWAalsdEVtAWMnnVOpa3Zi1J78CtO5EDba1p7qr2oQSriSAFc6zkykqOMdLB/xgitL8pDHEfWTWSjDxq0HSY/4TrSfvkNBLQ9Q3+OqOEnJrJmhOQnIp0DFAJwmhWZRW3HyvXUSD+3vVUu6bEemokAfq4eitIdET7NI1yFTo+4FQmxyqfGGwpMaLNkZAp/GBTLPKnSsAVBQKGKSVii6wUxC6UB56aCwaWlQzQwHBTiaaChS00ih5NLFNpqfbrXOuBPgUZx4DYlI2Hr5UqAi0K08XRN2cSC8htnPYpeT8Gas4+g1bGRIWe8Nt/nNPVitGFpBNdMRoyChOCy8s96ifzUlejYCv8ANOp9CjS1Y7RzJVNGulr0TBJ5yB6Fj5qaVoaD2OSB/SHzVVCOb0K6KdAxVeTIfHpwaSro+aI8WW4P6INNEvk5yaSa6Ero822nK/qx89NK6PF48Wf7Wv8AzTFRgqGK3Kuj6RjxZiD6UGm1dH80DaUwT50mgKMUNjSxWsVoO4jk9HP/ADfNSDoe6DkqOf6R+amKjLg0aTvWjVou8Dk2yr0OU39R16B/ayT6HE/PTCimSaWk1bnSd7T/AKEo+hafnojpm8pG8B31EH89AUVqVU4lVSzp+7J52+R/y5ofSi5I8qDJH/CPzUxDCFU8k0PAJqT40OQPS0r5qPweQkeMw6PSk0AOilY2ptHKlg0ARpTYWkiqWUwUkgjatAsVDfQFZ4htTToTRA0ZFSdeabUBgpucY/8A9qaFWekYxRrfT6k7p+mMf8omhXTjdowyLk7GsUkgDnTi+dIdUlDRUsgAd9ZmhUXuUlpIRnAA41HuFXjCLdpHT6r9qfxVNgK4SnjLWdgkAc1b7n074rOW5CZ2pIKVEhLklJ9STxYPpCceutX0yWdV60DOjNyY0Ugoc6ySvgbASoHdXZVQVuyZv2GtO9K+lb65Lbiy3WTFjrlOF9opHVo8ojnnHdzpyLrux3p+NBmW+6R2Zyg2w7OgLbZeURlICiMZI3FcS6PNBOPv3xIvtjWV2qQwAzLS6UlacBSsckjtNb2FeJOqpmmrQp2wsC3ympJWxdEvrd6pJ8VLYSDk+natjMv77aVWmaGgpa4zoKmVK3IA5pJ7SM7E8x34JqlnzY0ExhLdDfhL6Y7WQTxOKBIT68Gt/r1CBYUvqSFLZkNFGewqWEH4Fmuf6jsf06jR2uvLBZcU6lYTkhRacQCPOCsK/o1lPg0i7BBmRbh1/gj6XeoeUw5jI4Vpxkb92RyoWubb7j1Xgz4cW5w4CQSU5Rxji+18Xfeq5nRK2VJUxcUgLUC9xscRX+xEkHiGCVNEk7+Udtqfg6OTFcjEzCUNcBUW0FtailhTJ8ZKsjYg7bjfv2ybNE2i4khCUqR1rfEjxlAqGUjvPmqBOfbjoUSU8QTnGez/AO4qBN0pwuPuJkx+DrUvNqej9Y5xAtnhWsqypPuY22PLfxaob1Agabsrtyk9TMcjLQ7wlkJ4sAJ4Ad+Ebbc8cqllWzit08Jn3aTI6h5SpTy1I8Q+P2jHfsRT9rts11txxuK8pDaeJagk4SM4z7dq031cRGFsIYjzHm/B4wUrwkhLa0RS0Q2gpwBlasg5CsdxqSrW7kyauQqO8hhaVgMpkciqQXs8sdoB23xSaQRbM4Yz+w6lzchI8U8zyFKahyHHkstsOKdUsNhISclROAPTWrg64eZU117C3glCkELd4t1KdPEAQRkB3AyD5I9FJVrR9T3GW3Skch1oTnCmiCQlIGfcgOXb7c+DS2c+vTS2XS26kpWlRSpJ5giolvH6uHoqy1C8JExx5IWEuOKWAtXEoZPae01XW/8Ab49FVEmRpUDYVMj+TUNryRUtvyakZSX/AFJIt03wdlttQCQcnnVYNYyz5TLftNQdXq4rwr7wVSciM10QhFq2c85y2aNX9V7/AGsI9ppadYudsf2KrJAg8XPaiHKq8cfgnySNmNYjtjq/5qWjWKPso6/UqsYrASSeQoZwnbuzR4oleSRukayYyMsO+0VrYcnrmkrGQCM71xjPipNdes5zCa+9FY5YKNUa45uXZbtKJrY/VfZ9K2e1NXJmSpchpTiSy2FjyjknJBrHNdlV/Sani+pju8Cd+WanErY8j4J+v+k6Bd7KI2nm7jEll0KU8psNkJAPIgntxXOxqLUCDlN/uo/+SqobyAASKjHaumqMC8Z1jqltQ4NQ3H+k7xfHVgzr/WTasJ1C9/SaQr4xWRTnip9BOaANo30la3T/APsPtiN/NUprpT1qnnd2XfvoyR8VYhAyN6cSN6XAzbOdMWsYqOJarc8P4zKvzEUSOnHVfPwSzqA72l/pVgbn+0nFdxGKroaeJKs06RLbR3u/9LN3tcWxuIhwHXJ9vRLcSWiAlRUoYB4uXiiqdfTtdmUcT1jhrH8Rzh/MayutcKi6RSOyxt/lF1jbmoCKfMofHRqvgNmdfb6f5I/ZNMtn0S8f9FSmun5H+c0x7JmfzVwQO4o0v4OCMmjVBs/k9CN9PsI/sunJCfvHOL89Po6eLJzcs10H3iEn/qrz4lZIzw/DSutV9p8NLSPwPeR6Ja6d9Mny7XeU/wDDR+lUtrpy0ery2bm1982PzV5s60/aH20YdPcqjRfAbs9ONdNeh1eVMko8yo6j8QqY10xaDc/91dH/AMR0/wDTXlhT6EpJc4gBQLzPD27+ajRBuz2Rp3WGndRh42SU9KDHD1nDHUnh4s454+1Psq9ZdiuOJRxOoJ2HG2UgnuzXj/Qetbho2XKctiYzzcoJDrbqTvw5wRgg5GT7TXSLB0z3G43u3W+RaYqUy5DbBcQ6oFPEoDOMeepcClM9BrRFaHuisnz1Ck3OGwMJ4fUBWSukt5U19JcOErIHtqscUVHck1NFWFrRUOQ+3JioCHCSlzhGAruPprNA1ZXk+4o++qp46ljQ4qozoyacKqbWakosNID/ABwsX4+x+UTQo9H/AL77H+PMflE0K6cPTOfL2dRXVDqGUQgMpPnNaJ4JS2pZIAAzWEucgyJ2O/epkzREy2uuMusSEAqcZcS6EggFXCQeHJ5Zxj11sOlyNI1D0cPGzMLmqWtp9LbYypaAoE4HacdlZKEjxk1p9P3OTaOJLKeuiLPEpgnBSTzKD2E9oOxO+2+THKuCckb5OSaS0hf5Ll8U3ZJkRS7PKYT1zXVca1pASkZxknFbVs/Tp7ScO26UudvlQZjD0iRIghhAQhJCvH7fR2101Oq7bwjrRLbX2p8FcXj1pBB9RpiXqcLQU2yM4tR5OvoLaE/0ThRPmwB5xW9ozpjOtpSXPBbcjhUpSw+6D9ihOeH1lWCPvTWH1RHLybWVxpEmMiZxPtsZ4ijqXQORG3EUVoQ0StbjrinX3DxOOK5qP5h2YpxKQOyspOzWKpHPmF6qju+DhLzccNLUzltLygk9YUhRzutI6sc98du5qPNut9t0V2VN6yKgxzwuqDXG44lLpT5WNjgEjAI22G9dLwKNTaVt4WkKA33GagowjCry7cEeGrWqO4l8qQpCUhspcSG8Y33SVHfurF9M7/UaWDOcKfeSn1Df81dUdUhalqWrG5rhPTldEybrCgMnxGUlw+k7Cs3yy+lRz5obCrWEnCBVazyFWsTyBWciokjFKV5NACgeZqGaIqbn9h6ajW7ecD5qk3MeTUa1/tz1VpHoyl2aRvyRUtB8SorY5VMQPEpAYDVn7sL+9FVAxirbVm13X96KpwRttyrsj0jmn9TF7YNIHKlDG+BjNFjxaogWRxJIPbREAIOO6hlOQSeVFsEKAPPegaCUfETXYbEMwGvvRXHjulPpFdgsR/UbX3orDP0jXD2y3QMEVD6S9k6XPfCdH981ORzFROkgAs6YP+5u/LNZ4vqNcnRz14e5qPmqIpNWElHuS8d1RXU4rpMCMkYVTwFISPGp9IpAOIG1OJFSIccvvssg4Li0oBxnGTire6WNNvjuqU+pxaQCMJ4RzA89IZlrmP1tc++FQYKfc11a3FObYtQ7x8dVkM7H01SEzV66cWmLpEoOCbE32fyi6ws4rOxOQSD8Nb7XCeKJpBQ5fSNH5RVYmckcBPnHx0EsgKTilupPVADljf10+y0l50IU4lAxzVV5brOlDvXTpEcs4BCUnOfTQKjPzeqMZHUBYWOe/Oq73QcyuujrZtTSihaWx6aQWLOvsbpbFanPA4ofZqHrpaX3RycNbty22tY8QoB8xqKuzRFBXVFOe7NPYWplUKckLbaUR4yhnzipb6cPKB7KsEW1TNxacUEhsA433zVfJVxSXCkbcVMEhDRw5itLo5OdYae/nGP8sVl0JUXM4POtTooY1fp7+cWPlihgekLptcZP4RXx1ENTLr+6Ur8Ir46hmsy0V17/AGsj778xqkq7v20Rv7/8xqgKzmsZ9mkRQV4+KC+2kJPjZoyc1Nl0Wmj/AN99j/HmPyiaFK0h++2x/jzH5RNCunB0znzdo6HqCSGY3VJOFK5+isfDbLrynFDmas77KL7i1fbnhT6KbhNcKQKzk7ZqifBb3q2RwoQSohKRuSTgCo7CUMslayEpSMknYAVqtOWEONom3RsKWrCmmFDZodhI7VenlyHaTUYtkylqiibd405aZkOp+2bZWoe0DFLbfbU51eSlz7RaSlXsO9WUjXsOOt91NsuK7PHWpt25IbT1KeE4UoDi41ISeagkgYNamZDi3KOEyGkOtqGUntHcQew+cVroZ+QxY2ozyp6bDct8zwd1RWlQKmnDzUkc8+cZHtFQLlcIttYS7McKErVwJAQVqUrBOAlIJJwCdhyBPZWbVGidoWtfDzNB5/q4Tq8jPDtUaTKi+BMyy+gxnSgIcT4wVxkBOMd5I9tQpExqfa2HISlONPKylXAU8QHaAQNu48iNxUsaZUTFOqzxnGByFeeNcyfDNYTlZyGyED1CvRk1HVR3HX9kpSVH1CvLjylzbhPlo4SkuFxWVAHBVgYB5+qs0UxbW5q1ieSKqmSM1axfJGKiRpEmikq8lWaNPLeiX5JqCyqufJHrqNa/256qfuZ8mo9s/bvqrSHRlPs0rdTY4ynFQm+VTY3kikNGfvunvDphfS4UkgDGO6qs6UdHJ0eyt+EA0OqHdVrJJEuEXyc+OmJI5LSfVTS9OTE/amuj9UKIsjuprLIh4onM12CWP82D66aNlmp/zPw108x0nsovBU+aq8rF4kcv+lE1S0pDCs5FdUtTCmYjQXzwKQiMhJzgVNbPi4qJz2RUI6jwV3VH6SwrwHSvBz8Fd+XTw5Ghr8Ztulyefgr/AMuni7Hk6OfLaIbVxOLyB308xEbfltIVkJWd8HzU48jLa891F1nVTomDj3VNb2ZFujS8ZSchx4H0g/molaWQBlMpQPnR/wCa2DTQLAOOymnEBCCs8hvSsdGLtrPVXeKhRBCX0AnHPChV/rFXuL4T9pn4RWckqPhC1A4PETn11KdWpennFuKUpaneDiJyew/moAoZqSLQrG+cfHVK0HEYKU5Hpq+mnFsx2Z/PVW2nxKpEvk6hcNOR7vpbS0tV8t0CSi1JaSxLVw8Y41HiB+D1Vk5mgJzwIi3ewv8A3s9A+M0esUhyFpJKhkJsqD//AGrrIT2WkMKKW0A5HZ56QjTjo21AT7m3AkD+SnNn89BfRtqceTaFq87bqVfEaxqEJCdhj0HFPNuOtnLb7yT5nFD89MRpntCalaPu1nuKjjGQgqqG9pa9sj3S1XRI/F1VCautyaHuVynNn+K+ofnqW3qfUTQw3qC6p/8AkqooZFVaZzKsuR5iCPt2VD81McDqFnLqkq7sEVex9b6qZ8i/zVfhFBfxipA6Q9Wg73cLHcuM2r81KgM+iVKRkJeB9IpUVb8clQZjrB7VDP560aNfXonMlu1yvwsJH5hT31ePKSUuad00ontML5iKYGPdfcdkqK0IGTySMCtBopta9YafPCQBcWOf31dE6LZVi1ZJnxrraLRHlspQplEdBbLgPFxYGd8eL7a6bbtI2K3zkTI1raS+nyVKKlcJzzAJwD56TdBQxdj+ucr8Ir46iA09clZnyT/KK+OpmmbQ5e7s3FbPC35Ti/tU0lyPopJ9um3RDbFtivSXePJS0gqwMHc91Evo91WhrrDaHOHngOtk+wKzXoi2W6LbIiY8JpLbae7mT3k9pqXTeFPli8rXR5ImxJMGQpibHejvJ5odQUn2Gmwa9Rao05A1Hb1Rp7SSsA9W6B4zZ7wfzV5pvtsfsl3k2+WMOsqxkclDsIrDJjcDaE1Il6P/AH3WP8eY/KJoUnRx/wAb7Hv/AKcx+UTQrX0/TMs3aL5w9fNwPJb2FW0VvxxgVWW5s+UeZ3NXsNG+ayRsWERgPyojCjgOPIB84ByQfMQCPXXR3FJbbKnFBKEjJJOABXOipxlCH2UlTjK0uhIGSoJUCUjzkAj11vH2ol4tLjLnC/ClslKsHZaFDv8AQa6cXRz5Ozzr0gSbPpLWlrYffly7M5ZX44XFKFOdW8p4eKT4pwFDc91dn0HrbTWpWUwtPTescjMj3BxKkrSgHhB359ntFeWelTSU3SGozbnlvO28JKoLq+RaKieEecFRyO857RW0+hZYeXrO5yUNksNwi2tfYFKWkgevhV7K1JPQOtQlFrZkEZUzIb4f6ag2fgXn1VjNSW5y6Q2m2kslbbocT1ji2yDwqGUOIPEhQzzGcjI7cjW6wfS74LAHjKW4HnB3IQcj18XD6cHurEa3ROkWtuDa0v8AXy3ktqcZXwFtAytR4vschPDnvUKxn2aQXBQjRUpVwL8u4JmLUWVOPOIAU5wdXxJIxyPVkgEkZVyHMifpZLemY9tZW1hlptsIKUhriTzUE8JGSd/GCge7tDrF8vgjr66K+zKS0hPU+BqWnOEhxwK7SFceE8yEjA3zVbOud8MzhaQVsJYWtDjsVxJcPA4QopAODxJQOEkE55eMMZuylRn9Vsuadt065SpSXnlElCktgFSyoKTkdycYGSrA5Y3BxsLXkRBazBdC1tJMhaeHJkZAU8nzgJSR/GFX3SrIE3SSTJfSiQgBYacIbWpXXFGyT4x8XhOOFO2Tn7GuRRxlVTbQ6TN/L1XFesU2Agzn3n1bvycEv7N+O5hWAodWcbKO48bYlVFE2QKqmxlQq0ieSKxm7NoKiYNxRr3TRDlRLOEn0VBoU9zOeH00xbD+rfVTtw5J9NM239ueqtYdGUuzTNkYFT43IVuOi3TNsvdqlvXKP1riHQlJ4yMDHmNbhOgrCnyYZH/FV89VpZOyRx1ApeK7F9Qlix+13B6HFfPQOhLF/qXv600eNh5Ecco8V2A6DsfY08P+KaMaEsn+qd/rDR4pBujj2KLHnrsJ0JZP9U7/AFhqHeNF2eJaZshppzrGmFrTlZ5hJIo8LF5EcqpQOKICjwazNB1s5xTmvxm3aWzyEd8f36YRtUrXQzZ9Lq/kZA/v1ePsmfRiV7oX6KhSTiXFPc4k/DU9we5q9BquuHiuNq7iDXQYnTmpKW4yQtKjgcxv2A01cHAbepYBAI2zS461hlvq0JWkp8bIGx2pq9KP0uJWAklOSB34qSkYZzdZqbJSUaZa7lSSf7tQRvv5qtJ4xpSF53VH4TTQjPzv3L9Y+Oq5HNIq0nj9Z8+cfHVSycrSKZLNPrIpbg6UPYbKgcv5ZdYq4LBaIB5kfHW41cn9RaUB/wBjJ/KrrFXJv7P+MBj1imJkdAPBy3pSUqP2Jp+MQFLURkJGakokBR8ntxtQ2CIPCodhoDPcasBIbwSUnGM06HG+IgjBBI5d1TsVqVYo81aFbHbj2UCiOc7J2o2Cir4sUYVvViY7CjjAFIVCaUPEVimpCoquEKl799arRsqS1q6wIakPpQuewhSQ4oAgrGRjNZpxHVS+HOcGtFo8cWstO4/2jH+WKfZPJ6Hue1wlfhVfHXQOiFlHUXB/bj4ko9WM1gLt+6Ur8Kr461XRZdW4d1ehPqCUyQOAn7YdlKPZUlwdZrl8WZL0T0hxLCiW5c7Te1rdajrcLkiCrmpW+5aPn5V1Cs1pfSMSxXC4XJb70+7TllTsyRgr4c+K2nGyUjuFbGJpa4R0+MIZ1HBeTgLejni9RwK7uTgZPKvNHS9fW73q53wVYXGip6lCgcgkcyPXWOd/lNcK/MVOi1E6wsW/+nsflE0Ka0Sr/HGwj/f2PyiaFT6fplZ+0bmC3hsd5q7jN8IHnqvgoyrPYKuWE7ZrOKNWPoGBUq23GRa1qDbZkRFEqLIICkE8ygnbfuOO057KjgbUCQBknA89ap0ZyVmgXe7LLSBKWhJHJMloo383EN/VUdy9xI7akWeJxrPb1ZabB7ySN/6IPqqiEpo/salODvbQpY9oFG1IadUUtuArHNPIj1c6vd0QooWONTrjz7hdkOnK1kY9AA7AOwfnyaJayOVGo4G9NZ41ADl31mzRIakvFEdxxR5Das49MwjhTuo8zV1fslDcdrfO6sVl74g2y2yZrpAQy2pw58wrN8mi4PPfSfclXHWcoJOW4+GR6ufw1TRthvURx9UqY/JczxurKznznNTGOQpy4RC5ZMaq2jDCBVS1zq1jq8RNYSNoktHKm3hsaWg7UlzyTUlspbgMJR6abtn7d9VPXHyUek0xbD+rfVWsejGXZ6J6EgDY5x/lx8mugzZcaDHU/NkMx2E4BcdWEJGdhufPXPug/wDe/NP+8f8ASK2epFTUW3itcRuVLC08HGU+5d7g4iASBnAyM5roj0YvslC4Qy3FcEtjglEBhXWDDpIyOE/ZZG+1NT7zbLeopn3GHFUDgh55KN8Zxue7esiNLTkP2SVFWlMeApoIjSEhTjKUglZ4kqwVKOM4HYnuObP6XTZ9kcaWjqXbnI45nEcFDKjun09WAjbtOaoVGmacQ60hxpaVtrAUlSTkKB5EGlUYSEpAAAA2AFHimJiar9R/veuf4q78k1ZYqu1H+966firvyDR7AuzhBoUhR3os1xHUOCnNfcSrNpRKSR7nIzg/xqZSdqla2AFo0so8+qf+XV4+yZ9GHcSQhXjr5d9RLnuhJHMVLcO6qh3EYSPPXQYnS4UcOx0lWcHhPkE8hUbUA4LcWwoqITzPM7VNtSSphOEpwQDnkfbmoOpMNxXOfI8zmpKRjFOJQlCTniUnIq4uA/xOintSon2qNVOMspP8UVbXMn6j2PMQPhNAGeln9YuI+b5VULToDoPdV9OH+LKSO3Hyqo4ScuYNUiGbHUqeO1aTccUlCfpOBxLUAM9avbJrG3Ldo8JSrCk8jntFdNl6tnWTTWlrdHg2yXHdt3XETY/WYPWLG2+3IVnpWqWXfdLlpWxPJyAQz1jPP0GgRjWmnwheG1EKGOVKUXEnZAztWvN80wR42hmkq7VIuLhPq4s0E3LR7h91tGoI3mjS2yPhTmmCMh1iuRb+2+GldeeLKkK5g7DzYNa1bmi3RhErUEU97zKXsewik+CaWcGG9VuoP8tain4RmlQ7Mkp1JSQQrkRuPZS+tbUrysAk52PIj561iNP2h4jwfVdjXn/Xhxs/FTh0WXf2reNPyO4IlhPyjSaGZAPoV4xWOw8/NvS1rSlCuBe4Bxv561X1vruQSiJFeHYWprSs+oGokjQ19YBK7PNI720cfxUUBlyeOYrfJ4vzVo9IAjWenQOf0xj/ACxUUaUu8Z7rDbZyMn7OOofmrS6L05cRqyzOrZWS1MadUOAjhSFDJOad0Ls7Xdf3Tl/hVfHURJUhaVoUUrScgjmDUu6HNyln+VV8ZqLU2Ubm19KDdtiNI1Cy6scQQJDIBPL7JPq5j2Vdr6VtIpa4xcXFKx+xiM5n4U4+GuHau/c5v8MPiNZZNRLNKLoaxRlyda1x0sv3WO5CsDTkSMsFK33MdYodwA8n2muVKVvvSOLFETmsZTcnbNYxUVSLzRRzrSwfzhH/ACiaFFog/wCOdg/nCP8AlE0K6PTdMwz9o6nCawkVbNJATUaM3gCpiU7Uki2wlKShJUogJAySdgKs7HZUS2kTrmkltXjNR1jCQnsUsdp7cHl3ZqqcaS+9GjLI4X3kIUCMhSc5Uk+lII9dI6eyodFd4CSRnq/yia1gvcym30WepOkLS2mXGmLhdGEuqUEdSx7opA71BOeEDz1aMSLJqaGlyJJizWjulxhwFST5iNwa8U2/T92uBgeCQH3ROdLMdYT4rihzAPLbtPZg9xrX6KgQ7Z0u6fiW64CeGpLaHX0Jwgub8aUHPjJB24ts93abIR6KkxVQZngstfHkFbTnLrEjnkd42zjvB2zgRZtxt1ubSuW8hpClcCSdypWCcADcnAJ27Aa0Os0oTbWZCkkqZkNgYOM8ag37PGz6hWK1Na3rhDZRFbZW6071ieN5xhSTwqGUOI3Sd+4gjIPPNZSVM2g7RLDjL6zJbWlxlwAtrSchSSNiD2iuQ9PepvBbMLUwcKlq4FYO/CNz+YVo7hpmcwXnp1wRKcKGypThCA9whviQoBGQk8Cj5Sh458XnnmNy11aI12C3I8hyRGbRFShppCmcIeS5xAqVnsKcEcgO/AzUbZTnwcvYSdu0nkKupdumWx1DU+M4w4pPEErHMcvjBHpFXN11ZDudktcR+M4uQ0425JKs+MpPFxqSsrO7hVxKwlO/MqwCH9baht9+ciOxEP8AhKOIOuOtJbCk7cICQtQGN895JVzJqpIUWUDfZViwdhVYhQ2qawdhXNI3RZIO1JWdjTaVbUfMGoLKu4nxU+k0xbf276qcuPZ6TTNrP6u9VbQ6MZ9no3oPGNNzD/vP/SK1WrpCo0GKVPOR4a5KES30KKS00c5PEPJHFwgnsBJ251mOhH97Mv8AGj8lNavVFzdtcSKthKVLfkJYyptbnCClRzwo3Pk8hXRDoyfZl2NWphwZgYdQuO0JIZdkSC8l1xCGVtoQvYqBDittyeE4OBTh1XcRJuaEsw20xioYeWlKm8OJSFKy4NlAkjiCBy3I3q6+qmND61mV1inWY6ZDqkNFCcEAjxVHiTseZ2G4JyCKcc1ba2pDLLri0LcQFnIHi5BIB33zwncZHLfcZoQxpm7SbjdZHXyWlMOQ48hlnqurUOIHiUPGORkecct+06as2zqtqTLt7LEGWrwuQlnLiQjgSppTqV4J3BCDtzGD2jBjnWLCbc0rgJluwRLb4kFLaz1fHgb5xjt5dmc0CNZVbqPbT10P+6u/INC03iPdHpTUdLgVGXwLKk4BOSDj1g7HB5HkQaGpf3u3T8Vd+SaH0NLk4GvnSc0Cck0k1xHQLSqpetzmzaW8zb/yjUIVN1nvYdLn+K/8o1pj7In0YtfbUK5eSmpqwahXIeKgVuZHVLHvCR6KqdWK/U7noq3sX7RT6BVDq9eGF1BZmB+wJ+9HxVa3gcOl4o7wk1UpPuCR/FFXF+203EH8RHxCqEZ2ac6bR3DA/vVUwRlyrWX+9oekfKqrt2zlUiZGv1GgGDpD+aP+6usvdEfqY/fJ+UK0uo1LFt0gpBH7kHmP5ZdZm5FXgxBxupPyhTJDeb22qIoHPKrBew3p1NrU40lxLifGGcGmBVCgSKsVWt4D7A+g1HXBeT9gfURQBDJT2pHspKkNK8pCT6qdXGdTzQr1DNNqZcHNKh6RSEAIbHkgp9BxTzb7zScNSZCB5nVfPUcIUKUAokbUAdF6J9etWKZOZ1JJmuxX0o6t0qU51Sk57OeDxdncNu7rtq6RNKXCUzGh3jMh9YbbbU04kqUTgDdOOdeY1AJ4R24FXOjE51hp/wDnGP8AlBSasadHf7kcXCV+FV8ZpgVIuu1zl/hV/Gajp5VJRSavOLa3+GHxKrKcYrUa0OLW3j/Xp+JVZAGufJ9RtDodKqUhW1M5owazNDQ6IP8AjpYP5wj/AJRNCmtDK/x20/8AzhH/ACiaFdfpumc2ftHb2cYp4IJptkipaDtsKaAjSEKYS3IaBLjDiHcAZJCVAqAHeRkeutHqa0RtU6WmW5bgLExnCHE7gE7pUO/fBqpShRG/KnIEx+0+IlCpMInPAkjjazz4c809uM5HZnYDWDoiSPK13OqtBOXOwPuvw2ZIKVhPkOp+3QrzjYkb4JBre/Q89H8128s6lubC2IUcExUuDBdWRjiA+1APPt2ru065acuLTf0zcgKShQWhE5IQpKhyIS4AQfPinnr4wUFFtQZbmPFKQUtDzleMEfe5Pmq7RFEfV6i+1GgN44nHA6vfyUIOc/8ANwfD3VgdaMz1Rrc1CUtxxUzC0oeW0CkMunxlp3A4gn14raJjlTq35ag7Jc8tYGBgckgdgHz99VkpxtKnG2UhT5yAju85rmyS5s2hHg5b4fc3hGi3HKG+COlS3kKStzIaKyezOVLBT5jWWZ0XZhdG7nJCVPF5qQ42pSEtlKyOJvhIAGArnjAIO/YOzRNPtJWXpR6x5ZypRqem3RUc0pPqrNZWvYvx37nnJnTGn1xY7MhxMZ7d9cbr0KcC+FI6rrNtuavg51gZ7cePdJbMRwuR23VJbUogkpBwCcEj2bV7Fk2O0S0FMqFHdB5haAaztw6NNIS85tLLSj2sko+KnLJYLHR5bSqp0dzxRXdp/QxYHknwOTMjK7PHCx8IrMXDoYubCSq2XCNKI5IcBbJ9e4rNmiOfIVkU+k+KavBoHUzOQu3jI7A4mknSl+b2Va5B9AB/PWTLRj7knGPSajWv9veqtFdNP3cDxrZM27mlH81UkWK/Gm4kMutHHJaCn461g+DOa5PRXQgM6YlfjSvkprcXS2sXNltqT1gDbgdQptZQpKgCMgg55E1iOg8f4qyT3y1fJTW+lKfSG/B0cWVYXyyBg77kduPVn010x6MH2VrmnYLrjbjplLdbQUIWZLhKcjBIOdiRtmgxpy2xwAy04hPCUKSl1QC88W6hnc+Mrn3+inXZNzS1xIgNqWc+IXQMY5b78/zefYxIuZSP1E0VFOf2YAA91UKxCrFBLkdaW1oXHW2ttSVkFJQhSE/3VqB7waijSdoSlKUx1hAbDYT1qsYDYa5Z58AAz5qmPP3RDUdSIja1qKutTxgBIx4uDnff4vXTjD89UnhehoQ1xY40uA7Y549O1AgQ7XGhzJEpkOF98BK1LcKtgSQBk7AFSvbTWpv3uXX8Vd+SaszVZqfbTV1/FXfkmh9FI8/E70M0gmizXEdA6DUvW2fpBpUjukfKqADvVlrDxtO6XPcJHyjWmPsmfRiSFjPj+0VFnHj4KnlOTUCUPI9VbmR1OxnEJPorNaxV7ksd9aOzbQh6KzOsDltVR7lMoEn3FP3oq6vw/WCOO0JQPgFUuPch96KvtQpxakp+14RTEZmZtp7B83yqqIKwHRgjnV1chiwq82PlCqSGnjJqkRI2WoQDZdHnvtB/LqrL3D9ix/HT8oVor+hSrFo3iWU5tSuX4ZVZeclQKfGJHEnn98KokkyDheKv4iMxGfvB8VZ6UfHBFauMjgjtJPYkD4KARHcZVzFRV4A351c4FV8oJSVDq8jnkdtMZAUPNTZBxyqaWwBsKZdGE7CgCqnnhZ376jRcldSbwCGEedVMw0GkIbkk9fjswKu9E5OstPgdtxY+WKp5SD4R6qudEba10/8Azgx8qgDvt3P66zPwy/jNROKpN3/dWZ+GX8o1EzUFootaK/Wpr8On5Kqx6VmtbrQ/rU1+HT8lVY7irny/Ub4+h4qowoUwDmjKsVkWaHQ5A1tp7Jx+uMf8qmhWE0zcZH16dLxysqZF3hAJycDLqPnoV3YI6xOPNLZnq5gpKk7jBqyQtKR2VnG2kMrKmApA+14iRTpW4rmo1GxrqXqpCeXEKSXmgMlYqjwoZNXenbELgw3NuSVeDrHE1HOwUnsUv09ie7nvsHG5dClUVyR13SGk4DyVHl4u/wAVKZubSwepUhffhWatr3qfTumCyxc7hFhqXgIaG6sd5SkEhPnO1THYdqvsNqSypl5tY4mpMdQJ9KVDmPgrR438mXk56KBc1ShgYFRmkttlRQgAqOSe0069EchSlRZKuJYHEheMBxPf6R2j0d4pidIi2+MqROkNRmEkAuOrCEgk4Aye81hKLumbxargdWvI5CmSaNlxqSwh+K6h5lwcSHEKCkqHeCOdAioo0TQ2Tikk0tQphTiAvg4k8eM8Od8d+KTQxRXii64g7HFR3XQKjLkAUmBYLeSseOM1DdbKTlLp4KiqkjvprwwJPCTsakaLAMugA5SsUFx2HhwyIzavv0A1XxLmiPJDL5PVrPinuNXBdbUMpUKA7HrLCjQWHG4bDbKFLKilAwCcDf4KcuakJZbS5KVFUteELSM5VgnHo2J9VOW4pWwpSTnxsU+40hxSCtIUUKC057CO34a64dHNLsomYqUy0Bm8LLSUhsNBQPjY55z3nOD6OVPotUpJY47pIUEY4gQBxjbn/wDe2rFuDFbQUNx20JJCsAY3ByD7afPOrIK1UOUp1bhmqTniATw5ABJx3dmPWPa3Itkp14rbub7SSsq4QkEAEg438wx/9ObWlCgKIsKOqMx1a3C6riUoqOd8nPaTUHVe2mbr+Ku/JNXBqk1ostaRvSxzTDdP9w0Poa7PPpos1RfTp3O7SD6zTqb0j7NlQ9Brjo6Ey4zV3qRIc0zpokgY8I+M1kBeI55hafSK1t0hyrro7TMyCxIditKkpcWhtSgjJOCrAOKuPYpdGKkOobJOap3pjasFWRirWbGAWpCnEAjsKgD7Kz0+OsbJBPorZGTtG8tuurM1GSh11xCu0Fsn4qptRants08MRxbhVy8Qj4654ttSSQQQfPS4ww8nPfT19yd/Y36FBbKSPtR8VaLUSc25Y/jCqCC0fAkKUMDh/NWo1CyfpatR5ZFRZaRkLonFiV6vlCqW3jCh6av7qjNiVjsI+UKooY327DVImRrb2nisWjM7frSr8sqsvcRhA+/R8oVo744tdm0ehGE4tKt8Z/z6qzlwSsNjiIPjo5ffCrRIHAVkAc62pTjashFTxzGU/bLA+EVsnOY9FNgMKNQVA9YTk8ztnnU1dRXAM5xSAQvlUdwVIPKkKTmmBR3rYMjzmhCTkDHdTl7T7o0PMaXBSOEGkIhTx+qM5Po9dWmiTnWuntv/AHBn5Qqun7O4P/3c1ZaE/fvp8/7+18dAHebwvF2mj+WX8o1CK6kXo5u84/y6/lGoBUKzbLKXWy/1pb/Dp+SqsaF7CtXrZQ+lDX4dPyVVi0u4rnydm+N8EwLxRLXtTAcBoiuszQptMKP18NLfzzB/Kt0KTpbfpw0t/PMH8q3Qr0sf0o8+f1M9eJiE1IbhCpaQKWNqyUTdtldLgJdDMdWOF91DawdwpBUOMetPEKk9Ksq4x9ORY9lmmBKmzWYYkJSCUBZwcd3pG9HPWtplL6BlTDiHSAMkpSoFQA7SU5A9NPdIFvmXezQHbS0iU7FmszQ1xhPWpQckJJ2yeytoUkZTtsx1kms6AYW1qLTLrcl8hv6ZQQqYJzh5JKle6BSjsEq2z21Adh3qzX233+3QG9MW2XOZjuW5LvGqSHFgcTjY9zbOPtcq7zVjrnWVruEG0xZCnLdcGLvCdeiTU9UtCEvJKlb7KSMZyCRVlfLsrWsm2RNOwpEiDGnsynrg4nq2eFtWSEZ3WduwY89aEUarV4QiHGlkHiZfQkY2yHCEEHzZUD/RFZbUNvkTDbpMMMrfgyfCEtPLKEOZbW2QVAHBHHkHB3A78jT6sdQtqJCIyp50OkA7hLZCs/8ANwD11g+kmfNg2JsW5xxp919KesSeFKQAVkKV2ZCeEedQGRmsMnZrHoqrlpm9zXXlIfhxlOtqwph5xAZJS4ChKQMEFS0qK9iSCccsQrvpqfb0lcJxTyHJCElgSHfGQqVGUATuUpCUvZI5BR55NT7/AHaS9pe2zY70mOVFRcbVltxzCVAAqCTwKyAeEjn4tVStR3ppx8uJ67r5YiRmnGClbSnGkKaK8HdOeIKPf3chnyOkHJ0vfi60tme1HSlt5KeCS4erCy8UtjKckJ6xsBWU7I5bJxOtFuXDuomPsRmSY5Z4W5DjvB45UACoDIOfNjGw3qoXe7vGD+UOOBLuMuIUoqSXpWyRkDOENjnyI57CmDf126M6bxISlkKUUOFKuIEuOAIPPJ4UgjlsamVlRSs2D8pKSd+VVz8zc4Nc9u/STAaURBjPyNsZXhAz8JrJXHX12lAhgtRUn7RPEr2n5qyo2R2dcvYkqAA3JNZ266utENYDs9pSx9i145+Dl664vNuUycczJTz3bhayQPQOVRM0qHZ0e9dJbXEBAhOOFI2W8sJGfQM59oqindJmo5ZIRLbiIIwRHbAz6zk+wisg4M0ylXVuJVwpVwnOFDINWkiG2eoegV2ZK0dJfnvOvvOTVnjdWVHHAjHOuk8Jrx/bNf362sFmHJbaaKishKMZO2/wCpR6TtT52nD2H56qM2lyhOMW+z1vwnuouA91eTB0p6p5eGI9h+elp6VdVJ/0tB9SvnqvJ+gvGvk9YdWqh1ZFeUx0tapH+kNH1K/So/rt6oP+fa9iv0qXl/QXjXyeq+E91Umt2lL0fe0gYzDdH9w15x+uzqf/AFzX9/8ASpiZ0oajlxnY77rZadSUKHj7g8/sqHk/Qax/qUb7XVOqbKgVJ54poimIb5fS44s5UpZJqQDWZY2tO1dn6KtTQDphq1uXBqDMjKWCl13qw6lSsgg8jzIIrjwqSIbL8XLo5nG21NEtHf75bhebLLiw1Wx2StKS24t1vmFDI4hkjIz8fPFYZ3R14Ybw7ZlSV4wTDUH8/AK5U/Z4baC42t1sjtSo0cd+4xgPAr7cmQOQTIVj2ZrTgimbSbocpJcm2GVHT/HQAfYhRNVw0nbUuJWmFJbSncqcbeSn2qGKiQtW6zhACJqWQR3OgK+MVZt9JWuGtpCrdOH8uwDmjn2Ya/oSGIsZ5IZMtlKU7cCHElVXd1ZVNgiOlSUZIyojPKqpvpZuwRwXLS9ukIPMNkoHs3paOkbTS95milR1dq4xTn27Glqx3RW363Ki2dbQIXkpHEdvshWUaaLLvCcHKuyt9J1Z0eXNktSG77DKtzxlS0g+jNRoUXQby09TrBxonkJEfHwkVasmVEC5lJtOkdtxaF+3r1VnLju2M/bo+UK6jdNO2W5QrWiy6ntTjsKMYyUOOgdYCsrzz251QT+jzUKmuKLEjTEBSVcTMlO+CD2mrTIZl7QlKrgwSQAlWSSdq1TigSeEg47qrFacv0RzD9huYx2stdYPaKjyH3Ix4ZLcuMR2PxyKYInvKX2JNRDxA53qGJyVbIlND0hSPjo0vrUcIcacP8VwGkMmb9tKCajdc+keM0rHooCZg7pPsoAhX1Pu7I8xpUFBLe3MUc9C5byVowAkY37aXEbdbOFAYPdQBU3LPhZBJq00RlGtdPY7Z7XyqrroAJ53Htq20Uy4rWNgVwKAE9k5x/GoEdsvB/XSZn/XL+UarVqqfetrnM/DL+Uap5UhtlJLigBWRoik1m5xWxtP8sn5KqxuastW36OtpDLJ41BwKOD5iPz1nUXRo+UlY+Gsprk0g0kWGT3mnEk4qAmewr7Ij0in0SWlDxXE/FWdGiZB0mc9N2lv55g/lW6FI0eoK6bNKkEEG8wd/wDit0K9DH9KOCX1M9p5xQ46QVUkqqDQe6wHnQttwXaB1Sm3H7fnKerHEtjzBPNSe4DccgCOUVS8U0Xjmi6Bqy9nu6avKUC4qtcrqlBaUSeAqbV34Vuk047qCAhvgtykzXBsERiFJHpV5KfWc9wNZtxwLA4xxY5Z3p1D3i788bVe4tBwl1chyTLWlUhzAPD5KQOSR5hk+nJ9FU131LZ7aVIuFxitKH2BVxL/AOUZPwVzn6IC8S2LfaokaS6yy8t0vJbUU8fCE4Bx2bnauGpffTsl5wDsBVn46xk2y0qPQd66T7c0Si3RpElQ5KVhtCvbk/BWNuvSBc5jrbjDEOMtpRU0sNca0EgjIKsjOCRkAc65oifJTzWlf3yfmp0XJwDxm0q9BxUOy+C9u14uNwUVS5sh3JzhSzgHzDkKoJIVjGSe2lquKVDdtYPqNMrfQvkT6CKnkohuJ8am8U+s5NIxSY6G6STvT/DSSjelY6I7hpojiBzUlxukJbJNUmJoEO1mRuBU5Nhcx2+2rvTzQLJyN81oG2RgeKKLFRiBp9f8b20PqfXn7P21vktealBpPcKBmA+pxz+N7TRjTix9v7TXQQwnuFKDCT2CkBz76nl96/aaQ9YVIQVKKwB5zXRRGT3CoNzYSY6tqBmEYYSyjhHKneGpTjQBOKb4KGwoZANS3FlMNIHfTfDgUckHwdNCYmQH3lKQU5NRwSMUtY3ojvVkj7RJGaUokcjRsjYUHE0CEpdVxYyakLdUlAyaicPjA04/uigoSt5GcqQg+qkLciODCo7Z9VRXknFMtoPbT4J5LFyBbS02pTHCVjOxqOmHHaUFR5EllQ5FKyMU48ctMjuTUVZVmhNoRdRbtfovD4Hqe5tgckmQoj2E4q6ja81vFADV+bdSPsXGGzn0nGaxaVqFPBasU9mKkbRfSDqBxXFcbLp64HtU9F4j8J/NTDus7W+f100HCX3mK+pgexIFZIOK7zTiXlj7I+2nux6pmoRqDQDi+J2xX+2q74T4Vj1rJNTGZugpCvcNS3qCT2TWFP49gArGF4nng+kUglpXlNNn1UKYtDojdpscoZtuurS6o8hMQmP8AyasGtEXZ5vihzbLcQeRiv8AD8KyBXKeohqHjx0UgQYPFlCFNq70qxRshas77oro+dalSJOorU2tSAEspDiX0nJJUTw5GRsBnvPq1tv0jY4VyTMjWaO3KRuFkK8XHaATgV5rtz10aI+l17uTAT9imQrA9Watp9+1g5bXYn1RTlRljChx+MR3Z50bBqzWa713At9wmJZeS4ourwEeMTua5RdtZXC5vEIBQ0ezO5qvbswU6S44pRzvkb1axrc0zjhQM95p7RQayIkQuvpytJz3mpfg5HMipnVBPZQUnasXKzVRIYbx2UfDinyg9mabUCKkqgaA/wAsWkf55hflkUKPQP8Alj0l/PML8sihXdD6UcUvqZ7PWsjeiLtMvOYazUVx/bnWZoSVuimlPAVXOSTk1Xy5pSDvUstIuFygHQM8xTEmeGykA786qWnysJUTvVbKlqclrSk7AYqdh0Y/p5X16bKocsvf9FckCBXXumFSlWW3NE+KXSSPOE/+TXJi0B3j10IKEgChioQceVJfQFpCUKAAKc9npp0OPDyktqHeFEfBj89OgHz97QJA+xPqpsPj7JCx58A/Ec0Rfa7V8P33i/HSCxRI9HpowM9opHECMggjzUVJod0OUKaJouNQ5Glqg3Y7hKu3FAIwchQprrV9oB9VH13ekUtStjSWOUw0nDi0pJ760cd9tzyFoV96oGuch1PnFLDmRsulQJnTAQTinEozXN2J0pj9ikOj0LNTWtRXBrYuhQ/jJFKirN8EUvgNYxjVrwx1rDavQSKsI+rIpx1rTqPRhVAGj4TUC5/sChiiZ1HbXRgPhJ/jAilSpsd9khp5tWe5QpMaRkXxhRpnGasH0AqNMcAqbHRHAIO9CR+x0+GxSJLZCBimmJoqXAc8qJKRnepC0mkpTvvVkjrSBig6gU40kY50TqBQBGCDmg6k4pzhOdqJ1JxRYUV7w3poZBqUsb0jh35U7ExT+zLZ81RianugFhO1Q1tjsp2FCEkZpzII2pAbNLSg0E8hYo8UfCqkkKFAw8URFDiI50RX5qBCFZ76TkilKUDRDGKAJEGSpoq89W8OaVrSk9tUKOdT7cPd2/TQMnONgPKOOZpwFI5pBp9xOVqNNqR5qVjojOqTnZOKayPPTzqcGmeA1LGgbdhoik+aj4DSVAipKRK6P2EnpX0mtSdxeIZz/wAZFCnujvJ6T9Jk/wC14n5ZFCuvC7RyZlTPU053gZxVYt/cUq6yB5IO9Q2vHWB5qGUhx5WGiqqNx7iUR56t554GCKpAnYqPfUSLROZ8WOpVVrPjTFVZN/tfHmqDDA69We2oLMn0tKKoFvJ/1iviFcxVyNdN6W1pMW3oT2LX8QrmR7aaEQYyQqTJz9sPiFPqaHZTUT9syfvh8kVMTjtobBIj9UQKQW1VLPPaiNKwaICo6VHKkJJ78b0hTRB2Usf0s/HVhgU2tOadhRCw4OSwfvh81FxODmlB9BIqUUCkFsZosmhjjV2oWPRg0ReT2qI++TipXBRFs91AEYKSrlwn0Gl7DvFGthKvKQk+qmywkcuNPoURQArhzyVR8KhyUab6tQ8lxX9IA/NRe6j7Q+sigY74/ac0oE1H6xxPNCvUQaMSseWCPvkkUqHZIOe+glSknZZFNJdbXyUn1GnPFPI0qHZJRNkI8l0+s5pz6bPJ8pDa/VioB250kmlqg2ZbN3pvPurBH3pp83WM4Oak+kVQkeYUlSAeY9lLRD2Zel1lzdDiT6aNAHeD6Kz/AFYHIkUON1B8VVPQNzToCcUTjYPbWdTPeR2nPpp9F0UPL39VLVhsi2LfcaSts4qI3dGVeWk+o08JkZfJZFKmPgS41THBg1JKkLPivo9ZxQDazunCh5iDQOhCwOrAxUVSd6nrSoJ3QfZUdeO6gBkCjxSgKUUkjlTsQiixR4IoUAIKQeYpBaT3U6aKiwojqa7jSeqPmqURRYosWpHS2rNT4AKXU00kb1Mho8cU9g1JylHioFe1LKd6SpApWOiK8rJpsKFPuopgoxUsEK2NEQKTuKI5pDLXo8SPrl6U/naJ+WRQpXR1/lJ0r/O0T8smhXXg6ZzZ+0d6WovO5qY0gIbCu2mYLWUhRHZS5TmChKTQAzclcSEJHbVdJCUNJ9NFqGaqDDLqBlZVwJz2H/6Kwkm4zHFEqkunf7ak0NOjdMOlSFDsFQI7oQ8tSjyrFquEtCSRId/5qrnLjJBUevd3/jVOpW5K6Q5BeTEUTtxr/NWJWRvU+/SXXkNBbilBJOMnlVGta8+UaEgcwRVhMiTn7cfEKkBYNVgUoOLIPM0vjV3mnqJTLELFHxZqt6xY7TR9Yv7Y0tB+QsdqGKrusX9saMOr+2NLRh5ETlIBpPBsaiF1f2xoutX9saerFuiYkYHKjxULrV/bGh1q/tjS1Y90TaSRnsqGVq+2NJ61f2xo1YbomFsHsptTIqP1q/tjQLqz9kaerFuh7qhSShXZimesV9saHGr7Y0ahsg1tBXltpPqpHg6PseJPoNK41fbGi4j30asNgupUPJdV6xmgEO9hQr2ijKj30niV2E0tWGyD90HlNq9RzQ60Dysp9IouNf2xoFajzJp6hsKC0Hkoe2iJHfTakpVzAPqpIQBy2o1FsOlINJLdIII5GklSh209WPYc6qgWjSAtffR8au+nqxOaC4SORNLStxB2WRSOKgVUtRbEpE6Qjk6o+mnRcXSMLSlXqqvKs8qTv3mlpZSmy1TObPls+w04mVGV9umqfKu+gFEUvGPysvUuNK8l4eujKc8ik+iqLj27aAcUORI9dLxj8pd8BHZRFA7c1UpkvJGzqh66BmP9qyRR42PyItOAUOA1XJlqPMmliTn7JQpaMfkRYIQc8qmxEniFUgfJOzivbUhqQscnD7aNGHkRojSapfCXv9Yr20kvu/bq9tDxsXkRcOYplQzVUp5w/Zq9tILzo/zivbUvGxrIi24aSoUzEdU81knxhsaePKs2q4NE75Lno6R/6jaWP/8AKxfyyaFO9HX+UPS/86xfyyaFdfp+mc3qO0d9QOrj921V6VdY+BzxUya5hpSR3VGtzeVFZ5UxFLrhPDbGvwo+SqufOK2Nb7Xi8wmxnbrR8Rrnj6sA0xDTzmEkVWur3NPOLzmoDismkBDuhzweumbRapV4m+DQkpKwlS1KWoJShIGSpROwApdxOQn11o+jiBIlG+Lbb9xXbX44cUQlHWLACU5O2TWWfJ48bmVGOzoqxomWTkXSxf2i389GdFyk87pYh/8A9Bv56231qrSm2dYnUDYnlriLfEjh48cs55Z2prT/AEX2+Xa2nbzekRZyieNltxtQSMnG+d9sH11wfx0Kvf8A+X/ybLC/j+pzu+2CZZm47shUZ6O/xBt6M8l1BKcZGQdiMiqmuhau09ItWjmo7ZTJZiXF9SnmlBQDaggIUrBOM8Jrntd3p8nlhtdmM46ugUKGKFbEgqbZIabjeIUJayhMh5LRUBkjJxmoVW+kP312f8ba+UKAKjtI7qFA+Ur00KAAaKjNFQARGam2S0Tr3cG4Vsjqfkr3CRgAAcySdgPTUOtt0R336Q6nU6qE/KaeaLS+obK1oGQeIAdm1Y55yx45SgraKgk5JMoNS6Yu2m5DTN3ilkvAltSVBaV454IJ33G1U60KQopWkpUOYIwa7trHWkB/UWnC9EnxoESV4SuQ9GUkkhJASkHcjfesP0zXy332/wAZ22srHVs8Ljy2ygub7bEZ23389cvpvVZcjjHJCrT5NMmOMbcWc/oUKFegYhGhijoUAORWg/KZaJwFrSnI7MnFHPYEadIYSSoNOKQCe3BxTlt/dKJ+GR8oUu9/uzP/AA7nyjQBAIoqUaI0AFS4sV+ZKbjxWluvuqCUIQMlRPYKRWr0s8bRpq93lgYnDq4UZztbLnEVqHceFJAPnqMs3CNrspK2B/TdmtB6rUF8UJw2XEt7HXqbPcpZITkdoGaT9SsK5srVpi7idJQkrMGQz1D6gOfAMlKzzOAc1P6NI7ajOuLMZFwvUNTbkOKt3g4jklS8c1EYG3nqi1M8lm/JfhQZNpkJCVrYWogtug5ygncDkRneuaM8jyOCk7X+lfy7oppVdFCoFKilQIUDgg9lFWq16G5TtrvLbaW1XOKHngkYBdSooWrHnIz66ytdWOfkipESVOhGDQAOaXQzViCqZLhpYt0GSFEmRx5B5DhOKiGra6/uBZvQ98oUAU5IogaGDQxQADRUZFSbXDVPucSIg4VIeQ0D51ED89JtJWwLex6ZenwTcJspi22tKuHwmRnxz2hCRus+ipabJpt9zqY2qih47JVKgKbaUfvgpRSPORTut1ybjqV2BBYcMOCpUKIw2CQEtnhJHeSRknz0xqayJtWnNPvOxVx58lL5fC8hSsOYTseW1cinKWrcqcukq/rZpVXx0VN+ss2xzfBpyEgqSFtuIUFIdQeSkKGxBquyRyJrTwJzM3RVwttweHXQVIkwOM7jiUEuNg9xBCsDtTmsxW+NydqXaIfyhSXXByJpYkOdppnNCtKESRJV2ijEhJ5jFRaFJoLL21vMhtYWsA57asQG1+QtJ9dZZrengSnkoj11zyhydEZcUdA6PGVDpC0wcbC6RfyqaFU3Rk8v65GlBxnBu0QYz/LIoV0enVJmGd20ehZXuhNKaVwICE01IWUjxRmnoTKuErXzqgMvro4hNDt6wfEawD3I1udcqy0kDscHxGsM+cZpksq3TsahHtqc4OdQ3BigGV805Ca2VptE69dGzLFrDalNXJxx8KeS2AC2gJJ4iO3NYyYobUlm5vxrdOgtcHg80ID2U5J4FcQwezesc2OU0tO0yoNLsvvqA1ApRIbhkfjrX6VOfW+1B/q4fv1r9KsQhO5xgU5/95VOmb/Ov/X/ALHcPj+v/R0uw6Wu1jteo5VxQwiIq2OtZRIQsFZwUjAJ32NczFWDN2lM2WTa0FHgkhxLqwU78SeWDVfSwwnFyc3bYSadUCio80Vbkgq40d++yz/jbXyhVPVxo799ln/G2vlCgCn+yV6aFFnxlemhmgAzRUM0KABXp7ons8a16Lt7jLaQ/KbDzrmN1E8t/MNq8wGtBB1lqKBEajRLvKaYaHChAIISO4ZFcPr/AEs/U41CDo2w5FjlbR6hv1pi3u1yIE5sLZeSU5xuk9ih3Ec65dqJlq/dCse4TglU2IjxHj5RKV8G584G/nrmqte6pUkg3yZv3ED81ZhXPJJJPM1xem/C8mKtp9NNV/X+Zrk9RGXS9gqFHRYr3DkBQo8UMUgJFs/dKJ+FR8oUu9/uzP8Aw7nyjSbYMXGL+FR8oUu+D9eZ/wCHX8o0AQKI0qkkUAFWp0glN0tt00+VpRJmcD0QrOAp5GcI/pBSh6cVlqNKilQUkkEHII7KjJDeNFRdOzRabhWsznbXqLwu3TFPJQ1KSQkR1ZwoOBRA4d+fMYqTqCQrVV9ttvsrMqSqPHTEbcewXXsFRK1Y2AGe/YDc0hrWT7zaEXu2268FACUvSm1B4Ach1iCCR6c01cNYzHIbsS1Q4NojOp4XRCbKVuJ7lOElRHmzXNpkc9q5/wBeF/f9irVUI11IjCbDtkB1L8a2RxG61PkuOZKlqHm4ifZWbocNHiurHDSKiS3fIVERSjRGqIC7RVvdP3Bs/wDxvlCqjtFW9z/cKz/8b5QpgU+KFHihigAqfgSnIU6PKZOHWHEuIPnByPipnFDFKr4YzX62hBN2GoYCC/abk54QhW5CHDutpeORBzt3cqj2iTdNR6shhuKxcJRylqO8n3FCQk/YjYJSN8ebtqtsmoLhZQ63EcQuM9s9GeQHGXR/GQdvXzqyXq5nhUWNNWFl1QPjpZcOPQkrKfgrk8c4x11v2T/5/wCjS03Zq4lmtczUs1T8aO06hlLDcWQkRuNYaPHIDSsYSSPFGPss7YxXLCMHG23dTsmU9KlLkPLy6s7lICQPMANgPMNqaxWuHHKHbvr+hMmn0JI3oYNGaMVuSIzijzSsUWKAHGlpTniNLKknlTKWUL50DGH2KiKza5LT4NV0Y/5StJb/APu8T8sihTHRe08npM0ieIFP03iZ/rkUK1xdGeXs9JOqTxgdtSgrDJHbVeg9a/kVLkq6pgq7cUijF6xIMcEHfrR8RrEyuRrYapP6kSo9rg+I1jpRyKZL7ILg51BfPOp6hkU3NtktCn0qZwWWW31+MNkLCSk8+3jTtz3oEZ+V4xFaeLpGO9JhF6WW2JLKShBBKlueDIdWMgbAdYnGe/0ms9Jgy0sPPhhzqWlpQ4rHkqVnhB9ODUyPLv8AEhLeZky22VLTHUA4QchvAGOfkbejamBLRoh5E1EZ24wg6TwugLCiyrxdlYOwyrGTjcEd2XWdLRGLzHi3B5aW026RLe4DniW0l04HcPcx/wDTVfbpeqLg2/IgTpCm4beFEyAjhGM4GSOI4bztk+IO4UmAxqG9I8OjuqeV48UKVJQha+JJ40JSpQUrIWdgDni89FASHtGusIlrduEZKYZWiSeFXubieHKRt43lYB5ZB5DBOWq1lXS7y2m2n5Ut1tSClKSpRCk7Z9Pkp/5R3VW9S5wJV1a+FWwOOdSxoRQqU9AlsoZW7GdSl1suoJSfGQFFJPoyCPVUbFIYVXGjv32Wf8ba+UKqMVb6P/fXZ/xtr5QoApT5SvTR0D5SvTQxQBZabgtXO/QIUhSktPuhCik4IB89XCtNMTXXjb5TTKEq6pCFul7rF8Cl4CkpAAwnHpI9WaiyHokluRFdU0+2oKQtJwUnvFWUabeLrcozDEl5yW66lLQDgRlZ8UbnAHMjPnpoC7m6MT4eREmoERJCXFKSo9UerSrc7DB4sZJAyMd2W1aFl+EGMibFMlJJWjxsJQHVNFWcd6c4G+Krn5l6tzyx4eorcHEpUeUl5KtsbqQSCcAbdmBUZN1vPhnWJlTPCljZQUrjOF8e3b5Xjemgmyxa0r10GRMZucMx0FaW1OHqy4pDYWpOFdoCkjbOSR6aciWCK7b4qeCQ9NlQ3ZiVIebQlsJWtOOFW6z7mScHODsNt61VyvTsWYtU1/qVoHWhTvCFDZvCQTvsrBA7M9maRDuN5hRFxmJEtphIUVISSAkKGFegEc++nQ0WzWiZS1yeKZGbZjOOtuuKOAOr6oE745l5A599PRdFIzxS7owpoCQFrie7JSppDqgCobb9UTg4JBBGd8VA1BqAusZnzVFKVdWConKTjO3bngTn70d1Mp1Bd08H64yiUKKwS4ScniyT3+Wvn9srvNAclWOZ7aOh2knmaFJjJFt/dGL+GR8oUq9/uzP/AA6/lGk2390Yv4ZHyhSr3+7M/wDDr+UaQEE1e6StcS5vTzPUpLUaMXgA6GgTxpTgqIOB43dVEalW24y7a8p2BIcYcUngUUHGU5BwfYKANTP0I8Lo5Egym1POqWqIy5zeZSvh4+MeLvuR3gE7ZGYY0ctxtTse4xnWuFXBwpVxrUkkKAR5RA2ORnZQ254qnb9dnkPJcuUtQeWVry6fGUSCSfSUpPpA7qubivVcQeEyZb6g5wNKLUpDqklQK0hSUqJQSCojIB3V56oVhHS8U3qZBYmLdS1EQ+hfDw+Org2I7vHqDddMPQiksyo0hr3QKXxhvCkLKFABRBVuMjGSQeVQlT7mJHWiRJD3VhoqyeLgBAAJ7gQPYKalOT3sJkl9RZUpfjZPAScqPmyd6KCy/e0S8ia/EauEV2Sh15ltCUqHWKZx1gyRtjO2eeD61N6IWpS1m5xkxm3Cwt3q17OhxtspAxkjLyDnuz2jFUgud3cRJZTKlqElxTjqQonjWd1E+c9vfSZF+u0jaRcZTnLynCeSgrPp4gDnvFHAci9RWVVmdjpMhqQh5ClBbYIAKXFNqG/8ZBwe0Y5VUVIky5EoI8JeW7wcXDxnOMqKj7SSfXTBpDQnG9W9z/cKz+h75Qqpq2uf7hWf/jfKFAMqaFChSFRr7dpiPdbbBMFMxM15YyFAL61tKVF1aEAcWE4AG54icDfal3fTMW0XOc3Kj3BTaZaYsVhSg265lHEo5KTuOJrbG/WVnJl3uE2GzElS3XYzIAbbUdkgDAAqwurt9jOW9yS48l9tKZzK0qBWjj4SHCRuFEJRz3wBVIRaW3TNvn60mwGjLVa4ST16m1BxYIASrhIGCOsOAcbjeoy9DzESVIcfbSgOFlSuFSuFwLWkoIA5hLa193CM5GapbezcpKnIEPrAqSONxKlBCVJTk8SicAAbnJOBU2RL1FbpDTb02QVcYfbU1IDqFKUng4kqSSlRKRw7E8iO+gZenQZbhSAt1LsjA6hxolSVcRhlJKUg58SV2Z39G6VaESIrLQuLBmSX0NxlJypDoWgkDbIByMZz/wCM8b5fy8hYnzuNZCkELVvjgAx6Oqb/AORPdUty76mjtIcfmz0NyGusR45wUDKQR3AeMPMM0xWyff8ARRgxHZjcthpoMpdbZdcHG5hCCvG/es4GPsT5s4wcqsnr5dHYjsZyfIVHdwFoKyQQAkY9iE/8o7hVcKljQKSTSqSRQNjzIyKWaQz5Jo1Vk+zSPRpujI/+pWk/53iflkUKb6MT/wCpekv53iflkUK2xdGWXs9EWtPicR7acuCitPAKNgdUxvttTCl5JUaRRlNZANwm09vWD4jWIeOc1t7/AInOlkHt2PcazcqzSG8+M3j0n5qYmikq4VrNxiTkx0uMpjxWUoKUg5Z6rJKsZOerPoyO6kN2OS4jiCm8ek/NWYucdbEktqwSe6gVGjj61bhoYR1cp5DDrDoU67lThbW4rx/6zY74KU1EXrhvrQC1K4BhPGODiKeApwRjz455AxvtisjLQpKgDUYtHFF0JI1Om9ZQ7VKuRkW9bsWZJLy2S4F9Y3kkNrUrcgHBz243zmotm1em1RPBWo4LS5Lrq18CONKVthALaiMoWnmCkjfFYeS9wOrTvscUx4WBzzTA6qx0hNdbHK2ZCEJbCFttlPCnCEJwnbIBCOwpI8X7Xdv64KGl9ZGYlIc4OBKC/lLJCHEpWjt4sryT6eeduYJnN9oI89SGXm3McLiM9xODToDodr1shiNEbmCa+WopjuJ63Zz3ZbgIV5ST4+Mg7cI58hiwoUzhQ7sUAfOKljH81Nss1NuvEKatJWmO8h0pHM4OcVXBVKGTUjFcyT3mhRgZo+E0WAmrHTtwTab/AG64LQXExX0PFA5qCSDjf0VA4D5qMNnPMUWFGrY1RHjs3BhpuQ4mclKVuKCG1NcIUMoCRjJzg96SofZZFzN1zDauc8RUy32nXnlpkrWFLRxLQodXnknxBscc/Nvz4R1H7JPto/Bl94p7IdGxZ12oXNqU9GccbbaSlLCnBwhQlpkFQAAAJCcbDnj0UHddrKWWkJklhBAVlYT1iQ2tOFAc/L7c7DFY3wZfmoeDL7xS2QtGbJvWjDc119Lc4de2UqBdCgwSptXuSTyHuYHZsR9rvjbhIMyfJlKHCX3VukbbcRJ7AB29gFDwZfemiMZY7R7aHJD1YxR094MvzUPBl+alaDViYroZksukEhC0qIHbg5o7g+JM6Q+kFIdcUsA9mTmj8HX5qSYy/N7aLQasYojT/g6/N7aHg6/N7adhTGK3qNfpLh62FwoACEKaShCgOoLRKsAcZHNJO4yoZ3rEGOrvFF1CvN7aakJxZuGOkAtPh9UNT0gSUqDq1JBMcEK6vAGM8YC89hHbUeTrlSilttMkscXjhSwnrE9SW8KA22yeedtqx/UK83tpPUK7x7aNhas3bOuYbBfLEOShclTjjrhUklClhvyPNlvt7D5qxF1lGfcpcxQIU+6p0g424iT2ADt7AKa6pXmo+pV5qTkOhjFDFP8AUK7xQ6hXeKVodDGKmS5SXrfBjhJCo/Hk9/EQaa6hXeKIsK7xRsg1GMUKd6lXmodQo91GyHTGa3MPXXVBovNSlqYSxwJD3ivdXHDRQ53oJBOP4yh9lmsWWVCi6lZ7qakg1ZoHtS+EX5+ZMbeeiPxPA1N9Z4yG+AJ8UnYYIzirmNrS0x1Qwi2PJTEdjvhTQbbLzjRdwVhKQNw6PP4vM5zWG6lfmodSrzU9kLVm7Y6QUJTCQpiQhtppDa0I4OEcLQbwnbOCBvgp7OfCKUjXrBPujE7quqLRYD+QR1i1p8fywfHxxA527c4rBdQvvFDqVeb20bInVjR50Kd6hXePbQ6lXePbU7IpJjVFT3Uq7x7aItEc8UbIKYbPkmiUaUkcIIpCqh9lrhGj6MP8pmkv53iflkUKHRgP/UvSX87xPyyKFbYujLL2ehpSytYbTypi4OCPEV34rtk3SFmly1yHIxS6vdXVqKQT6BUKV0fWCUMPMPkeZ5Qp6hsjz3ETxuKWe00i5qCUYzua9At9GunGxhMd/H4ZVNvdF+mXlZXGkE/h1UnFgpo4CVhqBxHbaudXBfhF0dX9inavYL/RZph5rq1x5PD5pChVYOhHRY4v1HL8bn+ql0KLBzTPG8xwKkED7HamVq2Ir2L9YTQnET4FMyf97XRnoF0Kf9Cme+10nBtjU0jwtM/bLv3xqG7Xutz6Hfo+WsqVAm5Jyf1Yv56bV9Dl0dq5wJvvxfz1aiyG7PCVJJPfXu7/AAb+jr/Z8734v56L/Bu6Ov8AZ8736v56qibPCjbzjfkLUn0GpSLi8nyglXqxXuH/AAbujr/Z8736v56H+Dd0df7Pne/V/PRQWeJm7mg+Wgp9G9S2Zba/IcHoNezv8G7o6/2fO9+r+eh/g3dHX+z53v1fz0tStzx2h49wNOpdSee1ewkfQ59HqPJhTx/81z56fT9D7oED9ozT6Za6hwGpHjkLSeRFHXsb/B+0F9wzPfa6WnoC0GnlCme+1/PRox7o8cBRHbRhau+vY/1hNCfcUz32uh9YTQn3FM99rqHjZSmjx0lw9tK6wV7D+sJoT7ime+10PrCaE+4pnvtdHjY/Ijx6Fg0oGvYH1hNCfcUz32ujHQLoUf6FM99ro8bH5EeQMjuoxg16/wDrD6G+4pnvtdKHQTocf6FL99LpeNh5UePsCkkCvYf1itD/AHFL99LovrE6G+4pfvpdHjYeRHjzhFDgFew/rEaG+4pfvpdD6xGhvuKX76XR42HlR46KRSeEV7H+sRob7il++l0X1h9DfcUv30ujxsPKjxzwikkCvZH1h9DfcUv30ui+sNoX7il++10/Gw8qPGpSKIjA2r2X9YXQv3FL99rovrCaE+4pnvtdHjYvIjxnk+ei389ezfrCaE+4pnvtdD6wmhPuKZ77XS8bDyI8ZUCa9mnoD0If9Cme+10X1gtB/cMz32ujxsPIjxiD56VkV7L+sBoL7hme+10PrAaD+4ZnvtdPxsPIjxrtQ27q9lfWB0H9xTPfa6P6wWg/uKZ77XS8bH5EeMzRV7N+sFoP7hme+10PrBaD+4ZnvtdHjYeVHjLaiNezfrBaD+4ZnvtdH9YLQf3DM99ro8bF5EeMaFezvrBaD+4ZnvtdD6wWg/uGZ77XQsbH5EeMaQqvaP1gtB/cMz32uknoA0Ef9Bme+10eNh5EeLTSFV7V/wAH/QX3DM99roj9D9oE/wCgzPfa6fjYnkR5X6IYMm4dKGlm4bK3Vt3Fh9YSM8KEOBa1HzBKSaFe1tD9H2nNEB86egBl18YceWouOEd3Ed8eblQrWEdUZTlsz//Z"
+              alt="Seller photo showing a tall left compartment and three right compartments"
+            />
+            <figcaption>
+              Actual listing photo ·
+              <a
+                href="https://www.alibaba.com/product-detail/Mini-Hotel-Room-Personal-Care-Vending_1601194835816.html"
+                target="_blank"
+                rel="noreferrer"
+                >Source</a
+              >
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+      <section class="slide" id="step-2" aria-labelledby="title-2" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 02 / 24</p>
+          <h1 id="title-2" tabindex="-1">Put these items on the table</h1>
+          <ol>
+            <li>Your vending machine and its supplied power accessories.</li>
+            <li>
+              A Mac or Windows laptop with Chrome, Bluetooth, internet, and a
+              wallet extension.
+            </li>
+            <li>One inexpensive test item, four sticky labels, and a pen.</li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>Everything is within reach.</p>
+          </div>
+          <p class="note">
+            Use the laptop for the full wallet + Bluetooth test. Android Chrome
+            can test Bluetooth, but ordinary Android Chrome has no injected
+            wallet extension; iPhone browsers do not support this direct
+            Bluetooth flow.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-3" aria-labelledby="title-3" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 03 / 24</p>
+          <h1 id="title-3" tabindex="-1">Check the actual machine</h1>
+          <ol>
+            <li>
+              Find the model label on the back or base. Photograph it for your
+              own records.
+            </li>
+            <li>
+              Confirm four compartments: tall left; top right; middle right;
+              bottom right.
+            </li>
+            <li>Mark these positions A, B, C, D with removable labels.</li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>Four physical compartments are identified.</p>
+          </div>
+          <p class="note">
+            A–D are labels we are assigning now. They are not verified factory
+            Bluetooth channel numbers. If your unit differs from the listing,
+            stop and use its actual model label.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-4" aria-labelledby="title-4" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 04 / 24</p>
+          <h1 id="title-4" tabindex="-1">
+            Read the power label before plugging in
+          </h1>
+          <ol>
+            <li>
+              Look for the power input marking, connector, and any battery
+              compartment.
+            </li>
+            <li>
+              Use the supplied power accessory only if its output matches the
+              machine input label.
+            </li>
+            <li>
+              If it uses batteries, follow the type and polarity marked inside
+              the holder.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>
+              You know which power input or battery type this unit requires.
+            </p>
+          </div>
+          <p class="note">
+            The listing says “5V” but does not establish the connector, current,
+            polarity, battery type, or switch location. Do not guess these from
+            the generic PDF. Use the seller question on the last slide if labels
+            are missing.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-5" aria-labelledby="title-5" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 05 / 24</p>
+          <h1 id="title-5" tabindex="-1">Power it on and leave it empty</h1>
+          <ol>
+            <li>
+              Place the cabinet flat and stable. Remove only obvious transport
+              packaging.
+            </li>
+            <li>
+              Connect the confirmed power supply or fit the specified batteries.
+              Use a labeled power switch if present.
+            </li>
+            <li>
+              Leave all stock out. Gently close the four compartments; do not
+              force a stuck latch.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>The machine is powered and all four compartments are empty.</p>
+          </div>
+          <p class="note">
+            No indicator color or boot sound has been verified for this model.
+            Absence of a light alone is not a diagnosis.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-6" aria-labelledby="title-6" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 06 / 24</p>
+          <h1 id="title-6" tabindex="-1">Open the operator controls</h1>
+          <ol>
+            <li>In Chrome, open the operator link below.</li>
+            <li>
+              Turn on the laptop’s Bluetooth. If Chrome asks for OS Bluetooth
+              access, allow it.
+            </li>
+            <li>
+              Close the seller app and any other app currently connected to this
+              machine.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>The operator page is open with Local Bluetooth selected.</p>
+          </div>
+          <p class="note">
+            The web app does not require the vendor account to test the supplied
+            direct-Bluetooth protocol.
+          </p>
+        </div>
+        <div class="slide-extra">
+          <a
+            class="action"
+            data-app="?operator=1"
+            target="_blank"
+            rel="noreferrer"
+            >Open operator controls ↗</a
+          >
+        </div>
+      </section>
+      <section class="slide" id="step-7" aria-labelledby="title-7" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 07 / 24</p>
+          <h1 id="title-7" tabindex="-1">Connect to the nearby machine</h1>
+          <ol>
+            <li>Click Connect machine. A Chrome Bluetooth chooser appears.</li>
+            <li>
+              Select your unit and click Pair. If absent, cancel and enable Show
+              all nearby devices, then try once more.
+            </li>
+            <li>
+              Wait for “Handshake confirmed.” Record the exact device name
+              below.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>The page says Handshake confirmed.</p>
+          </div>
+          <p class="note">
+            Do not pair a random nearby device. If the name is unclear, compare
+            the chooser before and after turning your own machine off, then back
+            on. Never hold undocumented reset buttons.
+          </p>
+        </div>
+        <div class="slide-extra">
+          <label
+            >Bluetooth name<input
+              data-note="bluetoothName"
+              placeholder="Copy the exact name from the app"
+          /></label>
+        </div>
+      </section>
+      <section class="slide" id="step-8" aria-labelledby="title-8" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 08 / 24</p>
+          <h1 id="title-8" tabindex="-1">If the handshake fails, stop here</h1>
+          <ol>
+            <li>
+              Keep the unit empty. Open Activity and export the session log.
+            </li>
+            <li>
+              Try the seller’s original APK on an Android device, if available.
+              The supplied file is base.apk.1; copy it as KSJ-Bluetooth.apk if
+              Android requires an .apk extension.
+            </li>
+            <li>
+              Use the account the seller gave you privately. Compare whether
+              that app can connect to this unit.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>
+              Either the handshake works, or you have a log and a clear failure
+              to send the seller.
+            </p>
+          </div>
+          <p class="note">
+            The APK is an Android tool; Chrome cannot install or run it. Do not
+            put the seller password into our web app. If neither app connects,
+            the seller must confirm the correct firmware/protocol. No purchase
+            test yet.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-9" aria-labelledby="title-9" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 09 / 24</p>
+          <h1 id="title-9" tabindex="-1">Check the closed-door readings</h1>
+          <ol>
+            <li>
+              With all physical compartments closed, click Refresh status.
+            </li>
+            <li>Confirm the displayed channels report CLOSED.</li>
+            <li>
+              If the screen says OPEN while the doors are closed, disconnect,
+              open Machine settings, and check the sensor-polarity setting with
+              the next physical test.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>The readings match the physical closed state.</p>
+          </div>
+          <p class="note">
+            The controller may report 12 channel values even though this cabinet
+            has four compartments. That is protocol capacity, not extra physical
+            doors.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-10" aria-labelledby="title-10" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 10 / 24</p>
+          <h1 id="title-10" tabindex="-1">Test channel 1 once</h1>
+          <ol>
+            <li>Tick “I’m beside my machine” to arm controls.</li>
+            <li>Click Test door 1, then Open door 1 once.</li>
+            <li>
+              Watch which physical compartment opens. Write A, B, C, or D next
+              to channel 1 below.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>One physical compartment opened, and its sensor reports OPEN.</p>
+          </div>
+          <p class="note">
+            The operator screen’s numbers are controller channels. Do not assume
+            channel 1 means the tall left compartment. A timeout means unknown:
+            inspect the door before doing anything else.
+          </p>
+        </div>
+        <div class="slide-extra">
+          <label
+            >Channel 1 opened position<input
+              data-note="channel1"
+              placeholder="A, B, C, or D"
+          /></label>
+        </div>
+      </section>
+      <section class="slide" id="step-11" aria-labelledby="title-11" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 11 / 24</p>
+          <h1 id="title-11" tabindex="-1">Close it and test channels 2–4</h1>
+          <ol>
+            <li>
+              Close the compartment by hand. Click Refresh status and confirm
+              CLOSED.
+            </li>
+            <li>
+              Repeat the same single-open test for channels 2, 3, and 4, closing
+              each before the next.
+            </li>
+            <li>Record which channel opens each physical position.</li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>
+              All four positions have distinct, physically verified channel
+              mappings.
+            </p>
+          </div>
+          <p class="note">
+            If any channel does nothing or opens the wrong position, do not
+            guess channels 5–12. Save the log and get the seller’s
+            wiring/channel map.
+          </p>
+        </div>
+        <div class="slide-extra">
+          <div class="notes-grid">
+            <label
+              >A · tall left<input
+                data-note="mapA"
+                placeholder="Channel number" /></label
+            ><label
+              >B · top right<input
+                data-note="mapB"
+                placeholder="Channel number" /></label
+            ><label
+              >C · middle right<input
+                data-note="mapC"
+                placeholder="Channel number" /></label
+            ><label
+              >D · bottom right<input
+                data-note="mapD"
+                placeholder="Channel number"
+            /></label>
+          </div>
+        </div>
+      </section>
+      <section class="slide" id="step-12" aria-labelledby="title-12" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 12 / 24</p>
+          <h1 id="title-12" tabindex="-1">
+            Check reconnecting before stocking
+          </h1>
+          <ol>
+            <li>
+              Disconnect in the operator app. Turn the machine off and on using
+              its documented power control.
+            </li>
+            <li>Reconnect and wait for Handshake confirmed.</li>
+            <li>
+              Refresh status. Check all four physical compartments and readings
+              again.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>
+              The connection and four sensor readings survive a fresh start.
+            </p>
+          </div>
+          <p class="note">
+            This separates a repeatable setup from a one-time lucky connection.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-13" aria-labelledby="title-13" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 13 / 24</p>
+          <h1 id="title-13" tabindex="-1">Prepare your test wallet</h1>
+          <ol>
+            <li>
+              Open the customer shop in desktop Chrome with your wallet
+              extension.
+            </li>
+            <li>Connect wallet and approve switching to Sepolia.</li>
+            <li>
+              Have a small amount of Sepolia ETH for gas. Sepolia ETH and TEST
+              credits have no monetary value.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>Your wallet is on Sepolia and can pay test-network gas.</p>
+          </div>
+          <p class="note">
+            Never paste a seed phrase or private key into this app. The browser
+            asks the wallet to sign; you review each transaction there.
+          </p>
+        </div>
+        <div class="slide-extra">
+          <a class="action" data-app="" target="_blank" rel="noreferrer"
+            >Open customer shop ↗</a
+          >
+        </div>
+      </section>
+      <section class="slide" id="step-14" aria-labelledby="title-14" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 14 / 24</p>
+          <h1 id="title-14" tabindex="-1">Create the test token</h1>
+          <ol>
+            <li>In the customer shop, click Machine setup.</li>
+            <li>Expand Create a fresh Sepolia test deployment.</li>
+            <li>
+              Click “1. Create test token,” review the wallet request, and wait
+              for its address.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>A test-token address appears.</p>
+          </div>
+          <p class="note">
+            If you close the page during a deployment, check the wallet
+            transaction before starting another one. The contract address is
+            also in its explorer receipt.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-15" aria-labelledby="title-15" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 15 / 24</p>
+          <h1 id="title-15" tabindex="-1">Create this machine’s contract</h1>
+          <ol>
+            <li>Click “2. Create four-compartment contract.”</li>
+            <li>Confirm the wallet transaction and wait.</li>
+            <li>
+              The KSJVendV2 contract address fills in. Copy it into your notes.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>A new contract exists with exactly four empty compartments.</p>
+          </div>
+          <p class="note">
+            This uses the new V2 contract in the existing smart-contract repo.
+            The older three-track deployment is not used.
+          </p>
+        </div>
+        <div class="slide-extra">
+          <label
+            >New machine contract<input data-note="contract" placeholder="0x…"
+          /></label>
+        </div>
+      </section>
+      <section class="slide" id="step-16" aria-labelledby="title-16" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 16 / 24</p>
+          <h1 id="title-16" tabindex="-1">
+            Enter the machine’s verified settings
+          </h1>
+          <ol>
+            <li>Enter the exact Bluetooth name recorded earlier.</li>
+            <li>
+              Fill the channel for A, B, C, and D using your physical test
+              notes.
+            </li>
+            <li>
+              Use the command profile and sensor polarity that passed your
+              tests.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>
+              The four product positions point to the four verified channels.
+            </p>
+          </div>
+          <p class="note">
+            The common default is channels 1–4, but defaults are not evidence.
+            Keep the setup dialog open for the next step.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-17" aria-labelledby="title-17" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 17 / 24</p>
+          <h1 id="title-17" tabindex="-1">Stock one compartment</h1>
+          <ol>
+            <li>
+              Disconnect the customer page if connected. Use Operator controls
+              to open the chosen empty compartment.
+            </li>
+            <li>
+              Place one test item inside. Close the compartment and verify
+              CLOSED. Then disconnect Operator controls.
+            </li>
+            <li>
+              Back in Machine setup, expand Stock a compartment on-chain. Choose
+              its position, product name, and TEST price.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>One real item is behind one closed latch.</p>
+          </div>
+          <p class="note">
+            Treat a compartment as one sale, even if several small items fit
+            inside. Unlocking gives access to the entire compartment.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-18" aria-labelledby="title-18" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 18 / 24</p>
+          <h1 id="title-18" tabindex="-1">Make that item available</h1>
+          <ol>
+            <li>Tick “I placed one item inside and closed the compartment.”</li>
+            <li>
+              Click Make this item available and confirm the wallet transaction.
+            </li>
+            <li>
+              Tick that you physically checked all four mappings, then click
+              Save machine and open shop.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>The shop shows the stocked product with its TEST price.</p>
+          </div>
+          <p class="note">
+            Only the wallet that created the contract can restock it. The
+            contract marks the compartment sold out after one purchase.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-19" aria-labelledby="title-19" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 19 / 24</p>
+          <h1 id="title-19" tabindex="-1">
+            Give the customer wallet test credits
+          </h1>
+          <ol>
+            <li>Open Machine setup again.</li>
+            <li>
+              Expand Create a fresh Sepolia test deployment and click “3. Get
+              test credits.”
+            </li>
+            <li>
+              Confirm the transaction from the wallet you will use to buy.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>The buyer wallet has 100 free TEST credits.</p>
+          </div>
+          <p class="note">
+            You can use the same wallet for tomorrow’s supervised test. A
+            separate buyer wallet also needs Sepolia ETH for gas.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-20" aria-labelledby="title-20" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 20 / 24</p>
+          <h1 id="title-20" tabindex="-1">Choose, connect, and pay</h1>
+          <ol>
+            <li>
+              Choose the stocked item. Click Connect this machine and select the
+              same Bluetooth device.
+            </li>
+            <li>Tick that you are beside the machine. Click Pay.</li>
+            <li>
+              Approve the exact token amount in the wallet, then confirm the
+              separate purchase transaction.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>The app says Payment confirmed, after two confirmations.</p>
+          </div>
+          <p class="note">
+            Approval alone is not a purchase. The compartment does not open just
+            because a transaction was submitted. Keep the browser open.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-21" aria-labelledby="title-21" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 21 / 24</p>
+          <h1 id="title-21" tabindex="-1">Collect the item</h1>
+          <ol>
+            <li>Click Open my compartment once.</li>
+            <li>
+              Confirm the correct physical compartment opens. Take the item and
+              close the door.
+            </li>
+            <li>Click I collected my item.</li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>
+              The correct compartment opened, the item was collected, and the
+              shop marks it sold out.
+            </p>
+          </div>
+          <p class="note">
+            If pickup is uncertain, do not pay again. Save the receipt and ask
+            the operator to inspect the compartment. Payment and physical
+            delivery are different events.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-22" aria-labelledby="title-22" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 22 / 24</p>
+          <h1 id="title-22" tabindex="-1">
+            If payment succeeds but pickup fails
+          </h1>
+          <ol>
+            <li>
+              Save the receipt from the customer screen. Note the order ID.
+            </li>
+            <li>Inspect the physical compartment before retrying anything.</li>
+            <li>
+              If no item was supplied, the operator can use Machine setup →
+              Refund a failed pickup and enter the order ID.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>The outcome is resolved without a second charge.</p>
+          </div>
+          <p class="note">
+            A refund does not reopen or restock a compartment. Restock only
+            after inspecting the machine and placing an item inside.
+          </p>
+        </div>
+      </section>
+      <section class="slide" id="step-23" aria-labelledby="title-23" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 23 / 24</p>
+          <h1 id="title-23" tabindex="-1">Save tomorrow’s result</h1>
+          <ol>
+            <li>
+              Export the operator session from Activity. Save the customer
+              receipt if you made a purchase.
+            </li>
+            <li>
+              Write what worked and what failed below. Click Export notes.
+            </li>
+            <li>
+              Keep this as a supervised test until the hardware protocol and
+              access controls are validated.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>
+              You have a repeatable four-compartment test and evidence for any
+              issue.
+            </p>
+          </div>
+          <p class="note">
+            The supplied protocol uses a shared handshake. The web checkout
+            cannot make that hardware enforce payment; unattended real-money
+            sales need a trusted controller or vendor support.
+          </p>
+        </div>
+        <div class="slide-extra">
+          <label
+            >Test result<textarea
+              data-note="result"
+              rows="3"
+              placeholder="Power label, Bluetooth name, channel map, sensor states, successful/failed pickup…"
+            ></textarea></label
+          ><button class="action" id="exportNotes">Export notes</button>
+        </div>
+      </section>
+      <section class="slide" id="step-24" aria-labelledby="title-24" hidden>
+        <div class="slide-copy">
+          <p class="eyebrow">STEP 24 / 24</p>
+          <h1 id="title-24" tabindex="-1">Documentation and seller request</h1>
+          <ol>
+            <li>
+              The exact Alibaba listing confirms KSJ-4 grid, four compartments,
+              Bluetooth, and a 5V listing field.
+            </li>
+            <li>
+              The manufacturer’s four-bay page describes QR → selection →
+              payment → matching door.
+            </li>
+            <li>
+              No model-specific public setup manual or firmware/channel map was
+              found in this search. The supplied 12-way PDF remains unverified
+              for your unit.
+            </li>
+          </ol>
+          <div class="done">
+            <strong>Done when</strong>
+            <p>
+              You know which claims are documented and which still need
+              confirmation.
+            </p>
+          </div>
+          <p class="note">
+            Do not send account passwords or wallet secrets with a support
+            request.
+          </p>
+        </div>
+        <div class="slide-extra">
+          <div class="sources">
+            <a
+              href="https://www.alibaba.com/product-detail/Mini-Hotel-Room-Personal-Care-Vending_1601194835816.html"
+              target="_blank"
+              rel="noreferrer"
+              >Exact Alibaba listing ↗</a
+            ><a
+              href="https://www.oemsmartlock.com/hotel-room-vending-machine/62302630.html"
+              target="_blank"
+              rel="noreferrer"
+              >Manufacturer four-bay page ↗</a
+            ><a
+              href="https://developer.chrome.com/docs/capabilities/bluetooth"
+              target="_blank"
+              rel="noreferrer"
+              >Chrome Bluetooth support ↗</a
+            >
+          </div>
+          <details>
+            <summary>Copy this question to the seller</summary>
+            <textarea id="seller" rows="5">
+I bought the KSJ-4 grid machine (Alibaba product 1601194835816). Please confirm that the supplied KSJ 12-way Bluetooth protocol and Dongguan KSJ Bluetooth Tool APK apply to my unit. Please send: the model-specific setup manual; input voltage/current, connector and polarity or battery specification; power-on/wake procedure; BLE advertised name and service/write/notify UUIDs; handshake bytes; the channel number for each of the four compartments; open/closed sensor encoding; and replenishment/emergency-open instructions. I can provide a photo of the model label and a connection log.</textarea>
+          </details>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <button id="prev" aria-label="Previous slide">← Back</button
+      ><span id="counter" aria-live="polite"></span>
+      <div class="progress"><div id="bar"></div></div>
+      <select id="jump" aria-label="Jump to step"></select
+      ><button id="next" aria-label="Next slide">Next →</button>
+    </footer>
+    <script>
+      const slides = [...document.querySelectorAll(".slide")],
+        prev = document.querySelector("#prev"),
+        next = document.querySelector("#next"),
+        jump = document.querySelector("#jump");
+      let step = 0;
+      const key = "ksj-slideshow-notes-v2";
+      let notes = {};
+      try {
+        notes = JSON.parse(localStorage.getItem(key) || "{}");
+      } catch {}
+      function show(n, focus = false) {
+        step = Math.max(0, Math.min(slides.length - 1, n));
+        slides.forEach((s, i) => (s.hidden = i !== step));
+        prev.disabled = step === 0;
+        next.disabled = step === slides.length - 1;
+        jump.value = step;
+        document.querySelector("#counter").textContent =
+          `${step + 1} / ${slides.length}`;
+        document.querySelector("#bar").style.width =
+          `${((step + 1) / slides.length) * 100}%`;
+        history.replaceState(null, "", "#step-" + (step + 1));
+        window.scrollTo({ top: 0 });
+        if (focus)
+          slides[step].querySelector("h1").focus({ preventScroll: true });
+      }
+      slides.forEach((s, i) => {
+        const o = document.createElement("option");
+        o.value = i;
+        o.textContent =
+          String(i + 1).padStart(2, "0") +
+          " · " +
+          s.querySelector("h1").textContent;
+        jump.append(o);
+      });
+      prev.onclick = () => show(step - 1, true);
+      next.onclick = () => show(step + 1, true);
+      jump.onchange = () => show(Number(jump.value), true);
+      document.addEventListener("keydown", (e) => {
+        if (["INPUT", "TEXTAREA", "SELECT"].includes(e.target.tagName)) return;
+        if (e.key === "ArrowRight") {
+          e.preventDefault();
+          show(step + 1, true);
+        }
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          show(step - 1, true);
+        }
+        if (e.key === "Home") show(0, true);
+        if (e.key === "End") show(slides.length - 1, true);
+      });
+      document.querySelectorAll("[data-note]").forEach((el) => {
+        el.value = notes[el.dataset.note] || "";
+        el.addEventListener("input", () => {
+          notes[el.dataset.note] = el.value;
+          try {
+            localStorage.setItem(key, JSON.stringify(notes));
+          } catch {
+            document.querySelector("#storageWarning").hidden = false;
+          }
+        });
+      });
+      document.querySelector("#exportNotes").onclick = () => {
+        const u = URL.createObjectURL(
+          new Blob(
+            [
+              JSON.stringify(
+                { date: new Date().toISOString(), model: "KSJ-4 grid", notes },
+                null,
+                2,
+              ),
+            ],
+            { type: "application/json" },
+          ),
+        );
+        const a = document.createElement("a");
+        a.href = u;
+        a.download = "ksj-four-compartment-setup-notes.json";
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(u), 1000);
+      };
+      document.querySelectorAll("[data-app]").forEach((a) => {
+        const base =
+          location.protocol === "file:"
+            ? "https://communetxyz.github.io/ksj-vend-app/"
+            : new URL("./", location.href).href;
+        a.href = base + a.dataset.app;
+      });
+      show(Number(location.hash.match(/step-(\d+)/)?.[1] || 1) - 1);
+    </script>
+  </body>
+</html>
