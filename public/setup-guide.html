@@ -398,7 +398,9 @@
           <p class="eyebrow">STEP 02 / 24</p>
           <h1 id="title-2" tabindex="-1">Put these items on the table</h1>
           <ol>
-            <li>Your vending machine and its supplied power accessories.</li>
+            <li>
+              Your vending machine and batteries matching its battery markings.
+            </li>
             <li>
               A Mac or Windows laptop with Chrome, Bluetooth, internet, and a
               wallet extension.
@@ -446,49 +448,50 @@
       <section class="slide" id="step-4" aria-labelledby="title-4" hidden>
         <div class="slide-copy">
           <p class="eyebrow">STEP 04 / 24</p>
-          <h1 id="title-4" tabindex="-1">
-            Read the power label before plugging in
-          </h1>
+          <h1 id="title-4" tabindex="-1">Check the battery specification</h1>
           <ol>
             <li>
-              Look for the power input marking, connector, and any battery
-              compartment.
+              Find the battery label or user-accessible battery compartment.
+              Read its markings before fitting or replacing batteries.
             </li>
             <li>
-              Use the supplied power accessory only if its output matches the
-              machine input label.
+              Record the battery type and quantity, or the battery-pack
+              specification, shown on your unit.
             </li>
             <li>
-              If it uses batteries, follow the type and polarity marked inside
-              the holder.
+              For a battery holder, follow each + and − marking. If the
+              specification is missing, ask the seller before choosing
+              batteries.
             </li>
           </ol>
           <div class="done">
             <strong>Done when</strong>
-            <p>
-              You know which power input or battery type this unit requires.
-            </p>
+            <p>You know the correct battery specification and orientation.</p>
           </div>
           <p class="note">
-            The listing says “5V” but does not establish the connector, current,
-            polarity, battery type, or switch location. Do not guess these from
-            the generic PDF. Use the seller question on the last slide if labels
-            are missing.
+            Your unit is battery-powered only, as you confirmed. It has no
+            external power supply. Battery type, quantity, and rechargeability
+            are still unconfirmed; the listing’s “5V” field does not establish
+            them.
           </p>
         </div>
       </section>
       <section class="slide" id="step-5" aria-labelledby="title-5" hidden>
         <div class="slide-copy">
           <p class="eyebrow">STEP 05 / 24</p>
-          <h1 id="title-5" tabindex="-1">Power it on and leave it empty</h1>
+          <h1 id="title-5" tabindex="-1">
+            Prepare the battery-powered machine
+          </h1>
           <ol>
             <li>
               Place the cabinet flat and stable. Remove only obvious transport
               packaging.
             </li>
             <li>
-              Connect the confirmed power supply or fit the specified batteries.
-              Use a labeled power switch if present.
+              If its user-accessible holder needs batteries, fit the marked type
+              and quantity in the indicated orientation. If batteries are
+              already fitted, follow the unit’s labeled power or wake control,
+              if present.
             </li>
             <li>
               Leave all stock out. Gently close the four compartments; do not
@@ -497,11 +500,15 @@
           </ol>
           <div class="done">
             <strong>Done when</strong>
-            <p>The machine is powered and all four compartments are empty.</p>
+            <p>
+              The specified batteries are fitted and all four compartments are
+              empty.
+            </p>
           </div>
           <p class="note">
-            No indicator color or boot sound has been verified for this model.
-            Absence of a light alone is not a diagnosis.
+            No switch location, wake procedure, indicator color, or boot sound
+            has been verified. The following Bluetooth steps check whether it is
+            awake. Do not assume that a battery pack is rechargeable.
           </p>
         </div>
       </section>
@@ -719,8 +726,9 @@
           </h1>
           <ol>
             <li>
-              Disconnect in the operator app. Turn the machine off and on using
-              its documented power control.
+              Disconnect in the operator app, leaving the batteries in place. If
+              a power or wake control is present, follow its label or the
+              seller’s instructions.
             </li>
             <li>Reconnect and wait for Handshake confirmed.</li>
             <li>
@@ -731,7 +739,7 @@
           <div class="done">
             <strong>Done when</strong>
             <p>
-              The connection and four sensor readings survive a fresh start.
+              A fresh connection gives the same four verified sensor readings.
             </p>
           </div>
           <p class="note">
@@ -1037,7 +1045,7 @@
             >Test result<textarea
               data-note="result"
               rows="3"
-              placeholder="Power label, Bluetooth name, channel map, sensor states, successful/failed pickup…"
+              placeholder="Battery type and quantity, Bluetooth name, channel map, sensor states, successful/failed pickup…"
             ></textarea></label
           ><button class="action" id="exportNotes">Export notes</button>
         </div>
@@ -1048,8 +1056,9 @@
           <h1 id="title-24" tabindex="-1">Documentation and seller request</h1>
           <ol>
             <li>
-              The exact Alibaba listing confirms KSJ-4 grid, four compartments,
-              Bluetooth, and a 5V listing field.
+              The exact Alibaba listing identifies KSJ-4 grid, four
+              compartments, and Bluetooth. You confirmed that the delivered unit
+              runs only on batteries.
             </li>
             <li>
               The manufacturer’s four-bay page describes QR → selection →
@@ -1095,7 +1104,7 @@
           <details>
             <summary>Copy this question to the seller</summary>
             <textarea id="seller" rows="5">
-I bought the KSJ-4 grid machine (Alibaba product 1601194835816). Please confirm that the supplied KSJ 12-way Bluetooth protocol and Dongguan KSJ Bluetooth Tool APK apply to my unit. Please send: the model-specific setup manual; input voltage/current, connector and polarity or battery specification; power-on/wake procedure; BLE advertised name and service/write/notify UUIDs; handshake bytes; the channel number for each of the four compartments; open/closed sensor encoding; and replenishment/emergency-open instructions. I can provide a photo of the model label and a connection log.</textarea>
+I bought the KSJ-4 grid machine (Alibaba product 1601194835816). My unit runs only on batteries and has no external power supply. Please confirm that the supplied KSJ 12-way Bluetooth protocol and Dongguan KSJ Bluetooth Tool APK apply to my unit. Please send: the model-specific setup manual; battery type and quantity or battery-pack specification; polarity and battery replacement instructions; whether the battery is rechargeable and, only if so, its approved charging procedure; power-on/wake procedure; BLE advertised name and service/write/notify UUIDs; handshake bytes; the channel number for each of the four compartments; open/closed sensor encoding; and replenishment/emergency-open instructions. I can provide a photo of the model label and a connection log.</textarea>
           </details>
         </div>
       </section>

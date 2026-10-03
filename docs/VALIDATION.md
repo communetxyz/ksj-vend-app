@@ -4,4 +4,4 @@ The original 35 BLE/controller/storage tests were retained. New tests cover four
 
 A local Anvil + mocked-Bluetooth browser test validates the payment-to-command path without a personal wallet. Production checks validate offline loading, accessibility and layouts. See CI for current results.
 
-Not established: physical power input, BLE compatibility, actual lock movements, sensor polarity, controller channel mapping, live Sepolia deployment or an actual paid physical pickup. The slideshow explicitly requires these physical checks.
+Owner-confirmed: the delivered unit is battery-powered only, with no external supply. Not established: battery type/count or pack specification, rechargeability, wake procedure, BLE compatibility, actual lock movements, sensor polarity, controller channel mapping, live Sepolia deployment or an actual paid physical pickup. The slideshow explicitly requires these physical checks.

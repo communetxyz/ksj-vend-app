@@ -25,7 +25,7 @@ Open http://127.0.0.1:5184 in Chrome. `npm run build` emits static files in `dis
 
 ## First physical test
 
-Follow the slideshow. Inspect the actual power label, leave the unit empty, establish handshake, verify sensor polarity, and record the four channel mappings. The generic PDF has twelve channels; the cabinet has four compartments. Do not infer wiring or power details from protocol capacity.
+Follow the slideshow. The owner confirmed that the delivered unit is battery-powered only, with no external power supply. Check the battery type, quantity (or pack specification), and polarity on the actual unit; these details and rechargeability remain unconfirmed. Leave the unit empty, establish handshake, verify sensor polarity, and record the four channel mappings. The generic PDF has twelve channels; the cabinet has four compartments. Do not infer wiring or battery details from protocol capacity.
 
 Use desktop Chrome with a wallet extension for the full flow. Create a free test token and four-compartment V2 contract through Machine setup, fund the wallet with Sepolia gas, stock one item on-chain, and share the generated customer link. The app uses real wallet requests; it does not have a preconfigured live machine deployment. The unconfigured root is an explicitly labeled preview.
 

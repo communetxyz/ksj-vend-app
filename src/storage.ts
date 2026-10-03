@@ -153,7 +153,10 @@ export function labelFromQr(text: string): string {
   return value;
 }
 export const checklistSteps = [
-  ["power", "Power the machine; inspect the doors and remove loose stock."],
+  [
+    "power",
+    "Check the marked battery type, quantity, and polarity; inspect the doors and remove loose stock.",
+  ],
   [
     "baseline",
     "Close every door and check the CLOSED readback against the hardware.",
@@ -165,11 +168,11 @@ export const checklistSteps = [
   ],
   [
     "battery",
-    "Check battery or external-power reporting against the original app.",
+    "Check the reported battery level against the original app. This unit runs only on batteries; unexpected controller power flags need checking.",
   ],
   [
     "usb",
-    "Test USB on and off with a harmless USB load, if the machine has USB.",
+    "Optional: test USB output only if the unit has a confirmed output port; otherwise mark not applicable. This is not a battery charging step.",
   ],
   [
     "reconnect",

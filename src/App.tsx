@@ -510,6 +510,7 @@ export default function App() {
             </div>
             <div className="machine-meta">
               <span>{machine.slots.length} compartments</span>
+              <span>Battery-powered only</span>
               <span>{machine.encoding.toUpperCase()} command profile</span>
               <button
                 onClick={addMachine}
@@ -592,12 +593,12 @@ export default function App() {
                       </dd>
                     </div>
                     <div>
-                      <dt>Power</dt>
+                      <dt>Battery</dt>
                       <dd>
                         {snapshot.info
                           ? snapshot.info.batteryPowered
                             ? `${snapshot.info.battery}% battery`
-                            : "External power"
+                            : "Unavailable — unexpected controller power flag"
                           : "Not read yet"}
                       </dd>
                     </div>
@@ -818,9 +819,10 @@ export default function App() {
                 </summary>
                 <div className="utility-content">
                   <p>
-                    USB uses the APK’s four-byte command. A successful write
-                    does not prove that the port changed. Check it with a USB
-                    load.
+                    This machine runs only on batteries. These optional USB
+                    output commands come from the generic APK; use them only if
+                    your unit has a confirmed USB output. They are not charging
+                    instructions. A write does not confirm the port’s state.
                   </p>
                   <div className="button-row">
                     <Button
@@ -1331,8 +1333,9 @@ export default function App() {
           onClose={() => setUsb(null)}
         >
           <p>
-            Uses the APK command on {snapshot.name}. Verify the result with a
-            USB load; the device’s USB acknowledgment is undocumented.
+            Uses the APK command on {snapshot.name}. Only test a confirmed USB
+            output with a harmless load. This is not a battery charging control;
+            the device’s USB acknowledgment is undocumented.
           </p>
           <div className="modal-actions">
             <Button variant="light" onClick={() => setUsb(null)}>
