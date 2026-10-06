@@ -168,7 +168,7 @@ export const checklistSteps = [
   ],
   [
     "battery",
-    "Click Read battery level and compare the reported percentage with the original app. This unit runs only on batteries; an unavailable reading or unexpected power flag needs checking.",
+    "Click Read battery level and compare the reported percentage with the original app. Unverified means the power flag conflicts with this battery-only unit. Copy Battery reply details for diagnosis.",
   ],
   [
     "usb",

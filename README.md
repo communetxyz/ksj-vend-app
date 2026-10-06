@@ -33,7 +33,7 @@ Use desktop Chrome with a wallet extension for the full flow. Create a free test
 
 Open [operator controls](https://communetxyz.github.io/ksj-vend-app/?operator=1), choose **Connect machine**, then **Read battery level**. This sends only the KSJ device-information query; arming the door controls is unnecessary. The display shows the controller-reported percentage (including 0%) and the battery reply time. Connecting and Refresh status also request this information.
 
-A failed query clears the previous reading and shows unavailable. An unexpected power flag is also shown as unavailable, because this cabinet is battery-only. Simulation readings are labeled. The percentage is a firmware estimate; this feature has been tested with simulated Bluetooth replies, and still needs validation against the actual battery and seller app.
+A failed query clears the previous reading and shows unavailable. When the controller's power flag conflicts with this battery-only cabinet, the percentage is still displayed, labeled **unverified**. The supplied seller APK also reads the percentage independently of the flag. Expand **Battery reply details** to see or copy the raw reply, firmware version byte, flag, percentage and timestamp. Simulation readings are labeled. The firmware-reported percentage still needs validation against the actual battery; displaying a value does not establish that the controller measures it accurately.
 
 ## Checkout and security boundary
 

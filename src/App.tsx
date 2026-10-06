@@ -100,6 +100,19 @@ export default function App() {
   const connected = snapshot.status !== "disconnected";
   const busy = snapshot.busy;
   const canAct = ready && !busy && (mode === "simulation" || armed);
+  const batteryDetails = snapshot.info
+    ? [
+        `Mode: ${snapshot.mode}`,
+        `Battery reply at: ${snapshot.infoReadAt || "Unknown"}`,
+        `Firmware version byte: ${snapshot.info.version}`,
+        `Power flag: ${snapshot.info.raw[2]}`,
+        `Reported percentage field: ${snapshot.info.battery}%`,
+        snapshot.info.batteryPowered
+          ? "Power flag agrees with battery operation."
+          : "Unverified: power flag conflicts with this battery-only machine.",
+        `Raw reply: ${hex(snapshot.info.raw)}`,
+      ].join("\n")
+    : "";
   const machineOrders = data.orders.filter(
     (o) => o.machineId === machine.id && o.mode === mode,
   );
@@ -600,9 +613,7 @@ export default function App() {
                           {snapshot.readingInfo
                             ? "Reading…"
                             : snapshot.info
-                              ? snapshot.info.batteryPowered
-                                ? `${snapshot.info.battery}% ${mode === "simulation" ? "simulated" : "reported"}`
-                                : "Unavailable — unexpected controller power flag"
+                              ? `${snapshot.info.battery}% ${mode === "simulation" ? "simulated" : "reported"}${snapshot.info.batteryPowered ? "" : " · unverified"}`
                               : snapshot.infoError || "Not read yet"}
                         </span>
                         {snapshot.infoReadAt && (
@@ -622,6 +633,15 @@ export default function App() {
                       </dd>
                     </div>
                   </dl>
+                  {snapshot.info &&
+                    !snapshot.readingInfo &&
+                    !snapshot.info.batteryPowered && (
+                      <p className="battery-caveat">
+                        The controller’s power flag conflicts with this
+                        battery-only machine. Its percentage is shown, but its
+                        accuracy is unverified.
+                      </p>
+                    )}
                   <button
                     className="battery-query"
                     onClick={() => act(() => controller.readBattery())}
@@ -632,6 +652,23 @@ export default function App() {
                       ? "Reading battery…"
                       : "Read battery level"}
                   </button>
+                  {snapshot.info && !snapshot.readingInfo && (
+                    <details className="battery-diagnostics">
+                      <summary>Battery reply details</summary>
+                      <pre>{batteryDetails}</pre>
+                      <button
+                        className="text-button"
+                        onClick={() =>
+                          act(
+                            () => navigator.clipboard.writeText(batteryDetails),
+                            "Battery details copied.",
+                          )
+                        }
+                      >
+                        Copy battery details
+                      </button>
+                    </details>
+                  )}
                   {!connected && mode === "bluetooth" && (
                     <label className="checkbox-line">
                       <input

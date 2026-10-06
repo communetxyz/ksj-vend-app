@@ -124,13 +124,14 @@ describe("machine session safety and result semantics", () => {
     expect(c.getSnapshot().infoReadAt).toBeUndefined();
     c.disconnect();
   });
-  it("preserves an unexpected power flag for the UI to report as unavailable", async () => {
+  it("preserves the percentage and unexpected power flag for an unverified reading", async () => {
     const c = new MachineController(25);
     const t = new FixtureTransport();
     await c.connect(t);
     t.powerFlag = 0;
     await c.readBattery();
     expect(c.getSnapshot().info?.batteryPowered).toBe(false);
+    expect(c.getSnapshot().info?.battery).toBe(82);
     c.disconnect();
   });
   it("cancels a pending battery query on disconnect without retaining a reading", async () => {

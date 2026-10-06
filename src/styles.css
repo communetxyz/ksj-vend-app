@@ -441,6 +441,30 @@ svg {
   color: var(--pine);
   font-size: 12px;
 }
+.connection-card > .battery-caveat {
+  max-width: none;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  border-left: 3px solid var(--pine);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.battery-diagnostics {
+  margin: 0 0 16px;
+  font-size: 12px;
+}
+.battery-diagnostics summary {
+  cursor: pointer;
+  padding: 8px 0;
+}
+.battery-diagnostics pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+  line-height: 1.7;
+  padding: 10px;
+  background: var(--soft);
+}
 .checkbox-line {
   display: flex;
   gap: 9px;

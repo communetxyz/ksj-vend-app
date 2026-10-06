@@ -221,9 +221,7 @@ test("mocked real Bluetooth: battery reads, arming, collection confirmation, and
   expect(await page.evaluate(() => window.batteryFixture.writes)).toEqual([
     [0x66, 0xf0, 0xff, 0x77],
   ]);
-  await expect(
-    page.getByText("Battery reply at", { exact: false }),
-  ).toBeVisible();
+  await expect(page.locator(".battery-read-time")).toBeVisible();
   await expect(page.getByLabel("I’m beside my machine")).not.toBeChecked();
   await page
     .locator(".connection-card")
@@ -241,16 +239,46 @@ test("mocked real Bluetooth: battery reads, arming, collection confirmation, and
     { timeout: 10000 },
   );
   await expect(page.getByTestId("battery-value")).toContainText("Unavailable");
-  await expect(
-    page.getByText("Battery reply at", { exact: false }),
-  ).toHaveCount(0);
+  await expect(page.locator(".battery-read-time")).toHaveCount(0);
   await page.evaluate(() => {
     window.batteryFixture.silent = false;
     window.batteryFixture.flag = 0;
+    window.batteryFixture.percentage = 67;
   });
   await page.getByRole("button", { name: "Read battery level" }).click();
   await expect(page.getByTestId("battery-value")).toHaveText(
-    "Unavailable — unexpected controller power flag",
+    "67% reported · unverified",
+  );
+  await expect(page.locator(".battery-caveat")).toContainText(
+    "accuracy is unverified",
+  );
+  await page.getByText("Battery reply details", { exact: true }).click();
+  await expect(page.locator(".battery-diagnostics pre")).toContainText(
+    "Power flag: 0",
+  );
+  await expect(page.locator(".battery-diagnostics pre")).toContainText(
+    "Raw reply: 77 02 00 43 51 48 4C 66",
+  );
+  await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.getByRole("button", { name: "Copy battery details" }).click();
+  const copied = await page.evaluate(() => navigator.clipboard.readText());
+  expect(copied).toContain("Reported percentage field: 67%");
+  expect(copied).toContain("Unverified: power flag conflicts");
+  expect(copied).toContain("Raw reply: 77 02 00 43 51 48 4C 66");
+  await page.locator(".connection-card").screenshot({
+    path: `test-results/${testInfo.project.name}-battery-flag.png`,
+  });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > window.innerWidth,
+    ),
+  ).toBe(false);
+  await page.evaluate(() => {
+    window.batteryFixture.percentage = 0;
+  });
+  await page.getByRole("button", { name: "Read battery level" }).click();
+  await expect(page.getByTestId("battery-value")).toHaveText(
+    "0% reported · unverified",
   );
   await page.evaluate(() => {
     window.batteryFixture.flag = 1;
@@ -258,6 +286,7 @@ test("mocked real Bluetooth: battery reads, arming, collection confirmation, and
   });
   await page.getByRole("button", { name: "Read battery level" }).click();
   await expect(page.getByTestId("battery-value")).toHaveText("63% reported");
+  await expect(page.locator(".battery-caveat")).toHaveCount(0);
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth > window.innerWidth,
