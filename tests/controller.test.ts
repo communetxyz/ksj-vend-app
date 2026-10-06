@@ -12,6 +12,9 @@ class FixtureTransport implements Transport {
   noOpenReply = false;
   rejectHandshake = false;
   zeroBattery = false;
+  noInfoReply = false;
+  battery = 82;
+  powerFlag = 1;
   replyOtherDoor = false;
   async connect(onData: (b: Uint8Array) => void, onDisconnect: () => void) {
     this.receiver = onData;
@@ -23,13 +26,13 @@ class FixtureTransport implements Transport {
       this.receiver?.(
         Uint8Array.of(0xe8, this.rejectHandshake ? 0x0f : 0xf0, 0, 0, 0, 0x8e),
       );
-    if (b[0] === 0x66 && b[1] === 0xf0)
+    if (b[0] === 0x66 && b[1] === 0xf0 && !this.noInfoReply)
       this.receiver?.(
         Uint8Array.of(
           0x77,
           1,
-          1,
-          this.zeroBattery ? 0 : 82,
+          this.powerFlag,
+          this.zeroBattery ? 0 : this.battery,
           0x51,
           0x48,
           0x4c,
@@ -67,6 +70,81 @@ describe("machine session safety and result semantics", () => {
     await c.connect(t);
     expect(c.getSnapshot().info?.battery).toBe(0);
     c.disconnect();
+  });
+  it("reads a fresh 0% using only the info query and keeps its own timestamp", async () => {
+    const c = new MachineController(25);
+    const t = new FixtureTransport();
+    await c.connect(t);
+    const commandCount = t.commands.length;
+    t.zeroBattery = true;
+    await c.readBattery();
+    expect(t.commands.slice(commandCount).map((b) => [...b])).toEqual([
+      [0x66, 0xf0, 0xff, 0x77],
+    ]);
+    expect(c.getSnapshot().info?.battery).toBe(0);
+    const batteryReadAt = c.getSnapshot().infoReadAt;
+    expect(batteryReadAt).toBeTruthy();
+    await c.readDoors();
+    expect(c.getSnapshot().infoReadAt).toBe(batteryReadAt);
+    c.disconnect();
+    expect(c.getSnapshot().info).toBeUndefined();
+    expect(c.getSnapshot().infoReadAt).toBeUndefined();
+  });
+  it.each(["silent", "malformed"])(
+    "clears the old battery after a %s response and allows retry",
+    async (failure) => {
+      const c = new MachineController(25);
+      const t = new FixtureTransport();
+      await c.connect(t);
+      t.noInfoReply = failure === "silent";
+      t.battery = 255;
+      const query = c.readBattery();
+      expect(c.getSnapshot().readingInfo).toBe(true);
+      expect(c.getSnapshot().info).toBeUndefined();
+      await expect(query).rejects.toThrow("Battery level unavailable");
+      expect(c.getSnapshot().infoReadAt).toBeUndefined();
+      expect(c.getSnapshot().infoError).toContain("no valid reply");
+      expect(c.getSnapshot().busy).toBe(false);
+      expect(c.getSnapshot().readingInfo).toBe(false);
+      t.noInfoReply = false;
+      t.battery = 63;
+      await c.readBattery();
+      expect(c.getSnapshot().info?.battery).toBe(63);
+      expect(c.getSnapshot().infoError).toBeUndefined();
+      c.disconnect();
+    },
+  );
+  it("clears stale battery information when a general refresh fails", async () => {
+    const c = new MachineController(25);
+    const t = new FixtureTransport();
+    await c.connect(t);
+    t.noInfoReply = true;
+    await expect(c.refresh()).rejects.toThrow("no matching reply");
+    expect(c.getSnapshot().info).toBeUndefined();
+    expect(c.getSnapshot().infoReadAt).toBeUndefined();
+    c.disconnect();
+  });
+  it("preserves an unexpected power flag for the UI to report as unavailable", async () => {
+    const c = new MachineController(25);
+    const t = new FixtureTransport();
+    await c.connect(t);
+    t.powerFlag = 0;
+    await c.readBattery();
+    expect(c.getSnapshot().info?.batteryPowered).toBe(false);
+    c.disconnect();
+  });
+  it("cancels a pending battery query on disconnect without retaining a reading", async () => {
+    const c = new MachineController(25);
+    const t = new FixtureTransport();
+    await c.connect(t);
+    t.noInfoReply = true;
+    const query = c.readBattery();
+    c.disconnect();
+    await expect(query).rejects.toThrow("Disconnected");
+    expect(c.getSnapshot().info).toBeUndefined();
+    expect(c.getSnapshot().infoReadAt).toBeUndefined();
+    expect(c.getSnapshot().readingInfo).toBe(false);
+    await expect(c.readBattery()).rejects.toThrow("handshake");
   });
   it("opens only after fresh closed state and matching door feedback", async () => {
     const c = new MachineController(25);

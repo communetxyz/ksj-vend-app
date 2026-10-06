@@ -420,6 +420,27 @@ svg {
   font-size: 9px;
   padding: 4px 6px;
 }
+.battery-read-time {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  margin: 4px 0 6px;
+}
+.battery-query {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 44px;
+  margin-bottom: 12px;
+  padding: 10px;
+  border: 1px solid var(--pine);
+  border-radius: 6px;
+  background: white;
+  color: var(--pine);
+  font-size: 12px;
+}
 .checkbox-line {
   display: flex;
   gap: 9px;

@@ -168,7 +168,7 @@ export const checklistSteps = [
   ],
   [
     "battery",
-    "Check the reported battery level against the original app. This unit runs only on batteries; unexpected controller power flags need checking.",
+    "Click Read battery level and compare the reported percentage with the original app. This unit runs only on batteries; an unavailable reading or unexpected power flag needs checking.",
   ],
   [
     "usb",

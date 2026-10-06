@@ -27,6 +27,9 @@ export type Snapshot = {
   profile: string;
   doors: DoorState[];
   info?: Extract<Packet, { kind: "info" }>;
+  infoReadAt?: string;
+  infoError?: string;
+  readingInfo: boolean;
   lastRead?: string;
   logs: Log[];
 };
@@ -50,6 +53,7 @@ export class MachineController {
     mode: "bluetooth",
     name: "No machine connected",
     profile: "",
+    readingInfo: false,
     doors: Array(12).fill("unknown"),
     logs: [],
   };
@@ -92,8 +96,15 @@ export class MachineController {
   private receive = (bytes: Uint8Array) => {
     this.log("Bluetooth notification", "received", bytes);
     for (const packet of this.decoder.push(bytes)) {
-      if (packet.kind === "info")
-        this.patch({ info: packet, lastRead: new Date().toISOString() });
+      if (packet.kind === "info") {
+        const at = new Date().toISOString();
+        this.patch({
+          info: packet,
+          infoReadAt: at,
+          infoError: undefined,
+          lastRead: at,
+        });
+      }
       if (packet.kind === "locks") {
         this.locksFresh = true;
         this.patch({
@@ -171,6 +182,8 @@ export class MachineController {
       status: "connecting",
       mode: transport.kind,
       info: undefined,
+      infoReadAt: undefined,
+      infoError: undefined,
       doors: Array(12).fill("unknown"),
       lastRead: undefined,
     });
@@ -232,12 +245,30 @@ export class MachineController {
     if (this.state.status !== "ready")
       throw new Error("Connect and complete the handshake first.");
   }
-  private readInfoInternal() {
-    return this.exchange(
-      queryInfo(),
-      "Read device information",
-      (p) => p.kind === "info",
-    );
+  private async readInfoInternal() {
+    this.patch({
+      info: undefined,
+      infoReadAt: undefined,
+      infoError: undefined,
+      readingInfo: true,
+    });
+    try {
+      return await this.exchange(
+        queryInfo(),
+        "Read device information",
+        (p) => p.kind === "info",
+      );
+    } catch (error) {
+      if (this.state.status === "ready")
+        this.patch({
+          info: undefined,
+          infoReadAt: undefined,
+          infoError: "Unavailable — no valid reply. Try reading again.",
+        });
+      throw error;
+    } finally {
+      this.patch({ readingInfo: false });
+    }
   }
   private readLocksInternal() {
     return this.exchange(
@@ -251,6 +282,19 @@ export class MachineController {
       this.ready();
       await this.readInfoInternal();
       await this.readLocksInternal();
+    });
+  }
+  async readBattery() {
+    return this.exclusive(async () => {
+      this.ready();
+      try {
+        return await this.readInfoInternal();
+      } catch (error) {
+        if (this.state.status !== "ready") throw error;
+        throw new Error(
+          "Battery level unavailable: no valid device-information reply completed. Try reading again or reconnect.",
+        );
+      }
     });
   }
   async readDoors() {
@@ -321,6 +365,9 @@ export class MachineController {
       status: "disconnected",
       doors: Array(12).fill("unknown"),
       info: undefined,
+      infoReadAt: undefined,
+      infoError: undefined,
+      readingInfo: false,
       lastRead: undefined,
     });
     this.log(message);

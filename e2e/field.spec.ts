@@ -1,4 +1,14 @@
 import { test, expect } from "@playwright/test";
+declare global {
+  interface Window {
+    batteryFixture: {
+      percentage: number;
+      flag: number;
+      silent: boolean;
+      writes: number[][];
+    };
+  }
+}
 test("practice: connection, door lifecycle, stock edit, collection, ledger and reload", async ({
   page,
 }, testInfo) => {
@@ -123,10 +133,17 @@ test("settings reject wrong inputs and keep hardware changes disconnected", asyn
   await expect(page.getByRole("alert")).toContainText("whole stock count");
 });
 
-test("mocked real Bluetooth: arming, physical collection confirmation, and stock persistence", async ({
+test("mocked real Bluetooth: battery reads, arming, collection confirmation, and stock persistence", async ({
   page,
-}) => {
+}, testInfo) => {
   await page.addInitScript(() => {
+    const battery = {
+      percentage: 64,
+      flag: 1,
+      silent: false,
+      writes: [] as number[][],
+    };
+    window.batteryFixture = battery;
     const states = Array(12).fill(0x0f);
     const rx = Object.assign(new EventTarget(), {
       value: undefined as DataView | undefined,
@@ -140,9 +157,19 @@ test("mocked real Bluetooth: arming, physical collection confirmation, and stock
     const tx = {
       properties: { write: true },
       writeValueWithResponse: async (bytes: Uint8Array) => {
+        battery.writes.push([...bytes]);
         if (bytes[0] === 0x8e) emit([0xe8, 0xf0, 0, 0, 0, 0x8e]);
-        if (bytes[0] === 0x66 && bytes[1] === 0xf0)
-          emit([0x77, 2, 1, 64, 0x51, 0x48, 0x4c, 0x66]);
+        if (bytes[0] === 0x66 && bytes[1] === 0xf0 && !battery.silent)
+          emit([
+            0x77,
+            2,
+            battery.flag,
+            battery.percentage,
+            0x51,
+            0x48,
+            0x4c,
+            0x66,
+          ]);
         if (bytes[0] === 0x66 && bytes[1] === 0xf1)
           emit([0x1e, ...states, 0x1b]);
         if (bytes[0] === 0xff) {
@@ -168,6 +195,9 @@ test("mocked real Bluetooth: arming, physical collection confirmation, and stock
     });
   });
   await page.goto("/?operator=1");
+  await expect(
+    page.getByRole("button", { name: "Read battery level" }),
+  ).toBeDisabled();
   await page.getByRole("button", { name: "Inventory", exact: true }).click();
   await page.getByRole("button", { name: "Edit stock" }).first().click();
   await page.getByLabel("Product name", { exact: true }).fill("Test item");
@@ -181,6 +211,58 @@ test("mocked real Bluetooth: arming, physical collection confirmation, and stock
   await expect(
     page.getByRole("button", { name: "Test door 1, closed", exact: true }),
   ).toBeDisabled();
+  await expect(page.getByTestId("battery-value")).toHaveText("64% reported");
+  await page.evaluate(() => {
+    window.batteryFixture.percentage = 0;
+    window.batteryFixture.writes = [];
+  });
+  await page.getByRole("button", { name: "Read battery level" }).click();
+  await expect(page.getByTestId("battery-value")).toHaveText("0% reported");
+  expect(await page.evaluate(() => window.batteryFixture.writes)).toEqual([
+    [0x66, 0xf0, 0xff, 0x77],
+  ]);
+  await expect(
+    page.getByText("Battery reply at", { exact: false }),
+  ).toBeVisible();
+  await expect(page.getByLabel("I’m beside my machine")).not.toBeChecked();
+  await page
+    .locator(".connection-card")
+    .screenshot({ path: `test-results/${testInfo.project.name}-battery.png` });
+  await page.evaluate(() => {
+    window.batteryFixture.silent = true;
+  });
+  await page.getByRole("button", { name: "Read battery level" }).click();
+  await expect(
+    page.getByRole("button", { name: "Reading battery…" }),
+  ).toBeDisabled();
+  await expect(page.getByTestId("battery-value")).toHaveText("Reading…");
+  await expect(page.getByRole("alert")).toContainText(
+    "Battery level unavailable",
+    { timeout: 10000 },
+  );
+  await expect(page.getByTestId("battery-value")).toContainText("Unavailable");
+  await expect(
+    page.getByText("Battery reply at", { exact: false }),
+  ).toHaveCount(0);
+  await page.evaluate(() => {
+    window.batteryFixture.silent = false;
+    window.batteryFixture.flag = 0;
+  });
+  await page.getByRole("button", { name: "Read battery level" }).click();
+  await expect(page.getByTestId("battery-value")).toHaveText(
+    "Unavailable — unexpected controller power flag",
+  );
+  await page.evaluate(() => {
+    window.batteryFixture.flag = 1;
+    window.batteryFixture.percentage = 63;
+  });
+  await page.getByRole("button", { name: "Read battery level" }).click();
+  await expect(page.getByTestId("battery-value")).toHaveText("63% reported");
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth > window.innerWidth,
+    ),
+  ).toBe(false);
   await page.getByLabel("I’m beside my machine").check();
   await expect(
     page.getByRole("button", { name: "Test door 1, closed", exact: true }),

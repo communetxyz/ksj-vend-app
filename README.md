@@ -29,6 +29,12 @@ Follow the slideshow. The owner confirmed that the delivered unit is battery-pow
 
 Use desktop Chrome with a wallet extension for the full flow. Create a free test token and four-compartment V2 contract through Machine setup, fund the wallet with Sepolia gas, stock one item on-chain, and share the generated customer link. The app uses real wallet requests; it does not have a preconfigured live machine deployment. The unconfigured root is an explicitly labeled preview.
 
+## Read the battery level
+
+Open [operator controls](https://communetxyz.github.io/ksj-vend-app/?operator=1), choose **Connect machine**, then **Read battery level**. This sends only the KSJ device-information query; arming the door controls is unnecessary. The display shows the controller-reported percentage (including 0%) and the battery reply time. Connecting and Refresh status also request this information.
+
+A failed query clears the previous reading and shows unavailable. An unexpected power flag is also shown as unavailable, because this cabinet is battery-only. Simulation readings are labeled. The percentage is a firmware estimate; this feature has been tested with simulated Bluetooth replies, and still needs validation against the actual battery and seller app.
+
 ## Checkout and security boundary
 
 Sepolia only. Exact-amount ERC20 approval, two-confirmation purchase receipt verification, matching buyer/slot/amount/event, then one BLE unlock and separate collection confirmation. Payment success never claims delivery. A compartment sells once until restocked. Failed pickups can be refunded by the contract owner; retain contract funds for refunds.

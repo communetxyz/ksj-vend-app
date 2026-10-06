@@ -8,6 +8,7 @@ import {
 import { Button, Logo, Heading1 } from "@decentralpark/ui";
 import {
   Bluetooth,
+  Battery,
   ArrowUpRight,
   Package,
   Activity,
@@ -594,12 +595,22 @@ export default function App() {
                     </div>
                     <div>
                       <dt>Battery</dt>
-                      <dd>
-                        {snapshot.info
-                          ? snapshot.info.batteryPowered
-                            ? `${snapshot.info.battery}% battery`
-                            : "Unavailable — unexpected controller power flag"
-                          : "Not read yet"}
+                      <dd aria-live="polite">
+                        <span data-testid="battery-value">
+                          {snapshot.readingInfo
+                            ? "Reading…"
+                            : snapshot.info
+                              ? snapshot.info.batteryPowered
+                                ? `${snapshot.info.battery}% ${mode === "simulation" ? "simulated" : "reported"}`
+                                : "Unavailable — unexpected controller power flag"
+                              : snapshot.infoError || "Not read yet"}
+                        </span>
+                        {snapshot.infoReadAt && (
+                          <small className="battery-read-time">
+                            Battery reply at{" "}
+                            {new Date(snapshot.infoReadAt).toLocaleTimeString()}
+                          </small>
+                        )}
                       </dd>
                     </div>
                     <div>
@@ -611,6 +622,16 @@ export default function App() {
                       </dd>
                     </div>
                   </dl>
+                  <button
+                    className="battery-query"
+                    onClick={() => act(() => controller.readBattery())}
+                    disabled={!ready || busy}
+                  >
+                    <Battery size={18} aria-hidden="true" />
+                    {snapshot.readingInfo
+                      ? "Reading battery…"
+                      : "Read battery level"}
+                  </button>
                   {!connected && mode === "bluetooth" && (
                     <label className="checkbox-line">
                       <input
